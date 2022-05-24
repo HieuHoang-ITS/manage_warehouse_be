@@ -12,25 +12,24 @@ import javax.persistence.Table;
 @Table(name = "trading_invoice")
 public class Order {	
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-	int user_id;
+    private String id;
+	String user_id;
 	String trading_type;
 	String customer_name;
 	String customer_phone;
 	String status;
 	String description;
 	int total_price;
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-	public int getUser_id() {
+	public String getUser_id() {
 		return user_id;
 	}
-	public void setUser_id(int user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 	public String getTrading_type() {

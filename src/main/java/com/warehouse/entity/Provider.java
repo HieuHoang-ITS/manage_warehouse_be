@@ -10,8 +10,7 @@ import javax.persistence.Table;
 @Table(name = "providers")
 public class Provider {
 	  	@Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private int id;	
+	    private String id;	
 	  	String name;
 	  	String address;
 	  	String tel;
@@ -22,10 +21,10 @@ public class Provider {
 		public void setStatus(String status) {
 			this.status = status;
 		}
-		public int getId() {
+		public String getId() {
 			return id;
 		}
-		public void setId(int id) {
+		public void setId(String id) {
 			this.id = id;
 		}
 		public String getName() {
