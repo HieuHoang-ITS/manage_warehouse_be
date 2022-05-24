@@ -31,6 +31,10 @@ public class OrderController {
 	public ResponseEntity<List<Order>> getAllOrders(){
 		return orderService.findAllOrders();
 	}
+	@PostMapping
+	public ResponseEntity addNewOrder(@RequestBody Order order ) {
+		return orderService.add(order);
+	}
 	
 	@GetMapping("/detail")
 	public ResponseEntity<List<Order_Detail>> getDetailOrder(@RequestParam int order_id){
@@ -39,9 +43,7 @@ public class OrderController {
 	}
 	@PostMapping("/detail")
 	public ResponseEntity addNewDetailOrder(@RequestBody Order_Detail orderDetail ) {
-		
 		return orderDetailService.add(orderDetail);
-		
 	}
 
 }

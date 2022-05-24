@@ -18,4 +18,9 @@ public class OrderService {
 		return ResponseEntity.status(HttpStatus.OK).body(orderRepository.findAll());
 	}
 
+	public ResponseEntity add(Order order) {
+		orderRepository.save(order);
+		return ResponseEntity.status(HttpStatus.OK).body("New Order has been added");
+	}
+
 }
