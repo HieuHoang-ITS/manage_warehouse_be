@@ -14,8 +14,7 @@ import javax.persistence.Table;
 @Table(name = "products")
 public class Product {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
 	String name;
 	String unit;
 	int amount;
@@ -26,12 +25,12 @@ public class Product {
 //	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //	@JoinColumn(name = "provider_id", referencedColumnName = "id")
 //	Provider provider;
-	int category_id;
-	int provider_id;
-	public int getId() {
+	String category_id;
+	String provider_id;
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -58,16 +57,16 @@ public class Product {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public int getCategory_id() {
+	public String getCategory_id() {
 		return category_id;
 	}
-	public void setCategory_id(int category_id) {
+	public void setCategory_id(String category_id) {
 		this.category_id = category_id;
 	}
-	public int getProvider_id() {
+	public String getProvider_id() {
 		return provider_id;
 	}
-	public void setProvider_id(int provider_id) {
+	public void setProvider_id(String provider_id) {
 		this.provider_id = provider_id;
 	}
 }
