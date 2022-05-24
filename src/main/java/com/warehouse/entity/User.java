@@ -10,15 +10,16 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User {
 	@Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 	String full_name;
 	String email;
 	String tel;
 	String address;
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getFull_name() {
