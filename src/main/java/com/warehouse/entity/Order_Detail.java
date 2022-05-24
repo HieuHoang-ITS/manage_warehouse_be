@@ -11,11 +11,12 @@ import javax.persistence.Table;
 @Table(name = "detail_trading_invoice")
 public class Order_Detail {
 	@Id
-    private String id;
-	public String getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public int getProduct_id() {
@@ -24,10 +25,10 @@ public class Order_Detail {
 	public void setProduct_id(int product_id) {
 		this.product_id = product_id;
 	}
-	public String getOrder_id() {
+	public int getOrder_id() {
 		return order_id;
 	}
-	public void setOrder_id(String order_id) {
+	public void setOrder_id(int order_id) {
 		this.order_id = order_id;
 	}
 	public int getAmount() {
@@ -38,7 +39,7 @@ public class Order_Detail {
 	}
 	int product_id;
 	@Column(name="export_invoice_id")
-	String order_id;
+	int order_id;
 	int amount;
 
 }
