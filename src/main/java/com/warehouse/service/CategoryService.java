@@ -1,6 +1,8 @@
 package com.warehouse.service;
 
 import org.springframework.stereotype.Service;
+
+
 import com.warehouse.entity.Category;
 import com.warehouse.repository.CategoryRepository;
 
@@ -41,9 +43,19 @@ public class CategoryService {
 		});
 		return ResponseEntity.status(HttpStatus.OK).body("update successfully");	
 		}
+	
 	public ResponseEntity getCategory(int id) {
 
 		// TODO Auto-generated method stub
 		return ResponseEntity.status(HttpStatus.OK).body(cr.findById(id));
+	}
+	public ResponseEntity Delele(int id) {
+		boolean exists = cr.existsById(id);
+		if (exists) {
+			cr.deleteById(id);
+			return new ResponseEntity<String>("ok", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("NOT_FOUND",HttpStatus.NOT_FOUND);
+		
 	}
 }
