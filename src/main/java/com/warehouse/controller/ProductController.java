@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.warehouse.entity.Category;
 import com.warehouse.entity.Product;
-import com.warehouse.service.CategoryService;
 import com.warehouse.service.ProductService;
 
 @RestController
