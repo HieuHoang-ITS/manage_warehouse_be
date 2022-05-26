@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.warehouse.entity.DetailOrder_Display;
 import com.warehouse.entity.Order;
 import com.warehouse.entity.Order_Detail;
 import com.warehouse.service.OrderDetailService;
@@ -24,12 +25,8 @@ import com.warehouse.service.OrderService;
 public class Controller {
 	@Autowired OrderService orderService;
 	@Autowired OrderDetailService orderDetailService; 
-	@GetMapping
-	public ResponseEntity<List<Order>> getAllOrders(){
-		return orderService.findAllOrders();
-	}
 	@PutMapping
-	public ResponseEntity<List<Order_Detail>> addOrder(@RequestParam int orderId){
+	public ResponseEntity<List<DetailOrder_Display>> addOrder(@RequestParam int orderId){
 		return orderDetailService.findOrderDetails(orderId);
 	}
 
