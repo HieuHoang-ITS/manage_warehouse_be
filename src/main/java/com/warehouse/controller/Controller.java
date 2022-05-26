@@ -16,18 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 import com.warehouse.entity.DetailOrder_Display;
 import com.warehouse.entity.Order;
 import com.warehouse.entity.Order_Detail;
+import com.warehouse.entity.Product;
 import com.warehouse.service.OrderDetailService;
 import com.warehouse.service.OrderService;
+import com.warehouse.service.ProductService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class Controller {
-	@Autowired OrderService orderService;
-	@Autowired OrderDetailService orderDetailService; 
-	@PutMapping
-	public ResponseEntity<List<DetailOrder_Display>> addOrder(@RequestParam int orderId){
-		return orderDetailService.findOrderDetails(orderId);
-	}
+		@Autowired ProductService productService;
+		
+		@GetMapping("/products")
+		public ResponseEntity<List<Product>> getAllProducts()
+		{
+			List<Product> products=productService.findAll();
+			if (products.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(products, HttpStatus.OK);
+		}
+
 
 }
