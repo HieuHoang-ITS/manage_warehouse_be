@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.warehouse.entity.CustomOrder;
 import com.warehouse.entity.CustomProductDisplay;
 import com.warehouse.entity.DetailOrder_Display;
+import com.warehouse.entity.NewOrder;
 import com.warehouse.entity.Order;
 import com.warehouse.entity.Order_Detail;
 import com.warehouse.entity.Product;
@@ -34,11 +35,11 @@ public class OrderController {
 	
 	@GetMapping("/export")
 	public ResponseEntity<List<CustomOrder>> getAllExportOrders(){
-		return orderService.findIEOrders("export");
+		return orderService.findIEOrders("EXPORT");
 	}
 	@GetMapping("/import")
 	public ResponseEntity<List<CustomOrder>> getAllImportOrders(){
-		return orderService.findIEOrders("import");
+		return orderService.findIEOrders("IMPORT");
 	}
 	@GetMapping("/register/product")
 	public ResponseEntity<List<CustomProductDisplay>> getProduct(){
@@ -49,8 +50,8 @@ public class OrderController {
 		return orderService.findAllUser();
 	}
 	@PostMapping("/register/save")
-	public ResponseEntity addNewOrder(@RequestBody Order order ) {
-		return orderService.add(order);
+	public ResponseEntity addNewOrder(@RequestBody NewOrder newOrder ) {
+		return orderService.add(newOrder);
 	}
 	
 	@GetMapping("/detail/{order_id}")

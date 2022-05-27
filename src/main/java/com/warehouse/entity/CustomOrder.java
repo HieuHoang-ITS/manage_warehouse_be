@@ -12,10 +12,11 @@ public class CustomOrder{
 	String description;
 	int total_price;
 	private String user_name;
+	private Date created_at;
 	
 	
 	public CustomOrder(int id, int user_id, String trading_type, String customer_name, String customer_phone,
-			String status, String description, int total_price, String user_name) {
+			String status, String description, int total_price, String user_name, Date created_at) {
 		super();
 		this.id = id;
 		this.user_id = user_id;
@@ -26,8 +27,9 @@ public class CustomOrder{
 		this.description = description;
 		this.total_price = total_price;
 		this.user_name = user_name;
+		this.created_at = created_at;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -98,5 +100,13 @@ public class CustomOrder{
 	
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
+	}
+
+	public Date getCreated_at() {
+		return created_at;
+	}
+
+	public void setCreated_at(Date created_at) {
+		this.created_at = created_at;
 	}
 }
