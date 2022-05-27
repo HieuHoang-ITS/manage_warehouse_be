@@ -1,5 +1,6 @@
 package com.warehouse.service;
 
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,10 +13,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.warehouse.entity.Order;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.warehouse.entity.CustomOrder;
+import com.warehouse.entity.CustomProductDisplay;
+import com.warehouse.entity.Order;
+import com.warehouse.entity.User;
+
 import com.warehouse.repository.OrderRepository;
 
 @Service
 public class OrderService {
+
  @Autowired
  OrderRepository orderRepository;
  public List<Order> getAllOrderStatus(String status, int type)
@@ -59,4 +74,26 @@ public class OrderService {
 	}
 	 return orderRepository.findAll();
  }
+
+
+	public ResponseEntity<List<CustomOrder>> findIEOrders(String type){
+		List<CustomOrder> orders;	
+		orders = orderRepository.findIEOrders(type);
+		return ResponseEntity.status(HttpStatus.OK).body(orders);
+	}
+
+	public ResponseEntity add(Order order) {
+		orderRepository.save(order);
+		return ResponseEntity.status(HttpStatus.OK).body("New Order has been added");
+	}
+	
+	public ResponseEntity<List<CustomProductDisplay>> findAllProduct() {
+		List<CustomProductDisplay> products = orderRepository.findAllProduct();
+		return ResponseEntity.status(HttpStatus.OK).body(products);
+	}
+	public ResponseEntity<List<User>> findAllUser() {
+		List<User> users = orderRepository.findAllUser();
+		return ResponseEntity.status(HttpStatus.OK).body(users);
+	}
+
 }

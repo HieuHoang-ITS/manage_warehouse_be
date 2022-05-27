@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +27,6 @@ import com.warehouse.entity.Product;
 import com.warehouse.entity.Provider;
 import com.warehouse.entity.TableDetail;
 import com.warehouse.entity.User;
-import com.warehouse.repository.CategoryRepository;
-import com.warehouse.repository.OrderRepository;
-import com.warehouse.repository.UserRepository;
 import com.warehouse.service.CategoryService;
 import com.warehouse.service.OrderDetailService;
 import com.warehouse.service.OrderService;
@@ -39,6 +38,7 @@ import com.warehouse.service.UserService;
 @RestController
 @RequestMapping("/api")
 public class Controller {
+
 	@Autowired UserService userService;
 	@Autowired ProductService productService;
 	@Autowired
@@ -49,26 +49,33 @@ public class Controller {
 	OrderDetailService orderDetailService;
 	@Autowired
 	ProviderService proviService;
-	@GetMapping("/products")
-	public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title)
-	{
-		if(title==null)
-		{
-			List<Product> products=productService.findAll();
-			if (products.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			return new ResponseEntity<>(products, HttpStatus.OK);
-		}
-		else {
-			List<Product> products=productService.searchProduct(title);
-			if(products.isEmpty())
-			{
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-		return new ResponseEntity<>(products, HttpStatus.OK);
-		}
-	}
+//	@GetMapping("/products")
+//	public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title)
+//	{
+//		if(title==null)
+//=======
+//		@Autowired ProductService productService;
+//		
+//		@GetMapping("/products")
+//		public ResponseEntity<List<Product>> getAllProducts()
+//>>>>>>> develop
+//		{
+//			List<Product> products=productService.findAll();
+//			if (products.isEmpty()) {
+//				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//			}
+//			return new ResponseEntity<>(products, HttpStatus.OK);
+//		}
+//<<<<<<< HEAD
+//		else {
+//			List<Product> products=productService.searchProduct(title);
+//			if(products.isEmpty())
+//			{
+//				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//			}
+//		return new ResponseEntity<>(products, HttpStatus.OK);
+//		}
+//	}
 	@GetMapping("/orderchoxacnhan/{type}")
 	public ResponseEntity<List<Order>> getAllOrderStatus(@PathVariable("type") int type)
 	{
@@ -159,7 +166,6 @@ public class Controller {
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-
 //	@GetMapping("/search")
 //	public ResponseEntity<>()
 	//  + danh sách để tìm kiếm (mã đơn hàng,loại(nhập/xuât), ngày nhập hàng, ngày xuất hàng, người phụ trách)
