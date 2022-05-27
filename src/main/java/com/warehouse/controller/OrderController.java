@@ -48,7 +48,7 @@ public class OrderController {
 	public ResponseEntity<List<User>> getUser(){
 		return orderService.findAllUser();
 	}
-	@PostMapping
+	@PostMapping("/register/save")
 	public ResponseEntity addNewOrder(@RequestBody Order order ) {
 		return orderService.add(order);
 	}
