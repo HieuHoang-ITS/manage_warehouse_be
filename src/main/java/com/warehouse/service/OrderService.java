@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.warehouse.entity.CustomOrder;
+import com.warehouse.entity.CustomProductDisplay;
 import com.warehouse.entity.Order;
+import com.warehouse.entity.User;
 import com.warehouse.repository.OrderRepository;
 
 @Service
@@ -24,6 +26,15 @@ public class OrderService {
 	public ResponseEntity add(Order order) {
 		orderRepository.save(order);
 		return ResponseEntity.status(HttpStatus.OK).body("New Order has been added");
+	}
+	
+	public ResponseEntity<List<CustomProductDisplay>> findAllProduct() {
+		List<CustomProductDisplay> products = orderRepository.findAllProduct();
+		return ResponseEntity.status(HttpStatus.OK).body(products);
+	}
+	public ResponseEntity<List<User>> findAllUser() {
+		List<User> users = orderRepository.findAllUser();
+		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
 
 }

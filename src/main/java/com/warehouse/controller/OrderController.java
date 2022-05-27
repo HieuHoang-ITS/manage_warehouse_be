@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.warehouse.entity.CustomOrder;
+import com.warehouse.entity.CustomProductDisplay;
 import com.warehouse.entity.DetailOrder_Display;
 import com.warehouse.entity.Order;
 import com.warehouse.entity.Order_Detail;
 import com.warehouse.entity.Product;
+import com.warehouse.entity.User;
 import com.warehouse.service.OrderDetailService;
 import com.warehouse.service.OrderService;
 import com.warehouse.service.ProductService;
@@ -38,9 +40,13 @@ public class OrderController {
 	public ResponseEntity<List<CustomOrder>> getAllImportOrders(){
 		return orderService.findIEOrders("import");
 	}
-	@GetMapping("/total")
-	public ResponseEntity<List<CustomOrder>> getAllOrders(){
-		return orderService.findIEOrders("total");
+	@GetMapping("/register/product")
+	public ResponseEntity<List<CustomProductDisplay>> getProduct(){
+		return orderService.findAllProduct();
+	}
+	@GetMapping("/register/user")
+	public ResponseEntity<List<User>> getUser(){
+		return orderService.findAllUser();
 	}
 	@PostMapping
 	public ResponseEntity addNewOrder(@RequestBody Order order ) {

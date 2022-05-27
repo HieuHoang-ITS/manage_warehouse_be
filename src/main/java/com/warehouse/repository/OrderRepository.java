@@ -7,10 +7,22 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.warehouse.entity.CustomOrder;
+import com.warehouse.entity.CustomProductDisplay;
 import com.warehouse.entity.Order;
+import com.warehouse.entity.User;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 	@Query(value="Select new com.warehouse.entity.CustomOrder(o.id, o.user_id, o.trading_type, o.customer_name, o.customer_phone, o.status, o.description, o.total_price,us.full_name as user_name) From Order as o, User as us where o.trading_type=?1 and o.user_id = us.id")
 	List<CustomOrder> findIEOrders(String type);
+	
+	@Query(value="SELECT new com.warehouse.entity.CustomProductDisplay("
+			+ "pr.id, pr.name as product_name, ca.name as category_name, pro.name as provider_name, pro.address, pr.amount, pr.unit, ca.status, pr.price"
+			+ ")"
+			+ "FROM Product as pr, Category as ca, Provider as pro "
+			+ "WHERE pr.category_id = ca.id and pr.provider_id = pro.id")	
+	List<CustomProductDisplay> findAllProduct();
+	
+	@Query(value="Select new com.warehouse.entity.User(us.id, us.full_name, us.email, us.tel, us.address) From User as us")
+	List<User> findAllUser();
 }
