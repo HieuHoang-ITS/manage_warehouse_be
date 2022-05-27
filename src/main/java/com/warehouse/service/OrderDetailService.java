@@ -1,6 +1,7 @@
 package com.warehouse.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,20 @@ import com.warehouse.repository.OrderDetailRepository;
 
 @Service
 public class OrderDetailService {
-	@Autowired OrderDetailRepository orderDetailRepository;
+	@Autowired
+	OrderDetailRepository orderDetailRepository;
+
+	@Autowired
+	OrderDetailRepository orderDetailReposiory;
+
+	public Optional<Order_Detail> getbyid(int id) {
+		return orderDetailReposiory.findById(id);
+	}
+
+	public Optional<List<Order_Detail>> getOrderDetailbyOrder(int order_id) {
+		return Optional.of(orderDetailReposiory.getOrderDetailbyOrder(order_id));
+	}
+
 //	@Autowired CustomOrderDetailRepository cOrderDetailRepository;
 	public ResponseEntity<List<DetailOrder_Display>> findOrderDetails(int order_id) {
 //		return null;
@@ -23,4 +37,5 @@ public class OrderDetailService {
 //		orderDetailRepository.save(orderDetail);
 //		return ResponseEntity.status(HttpStatus.OK).body("New detailOrder has been added");
 //	}
+
 }

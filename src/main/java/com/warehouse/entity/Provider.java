@@ -1,5 +1,6 @@
 package com.warehouse.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,13 +16,20 @@ public class Provider {
 	  	String name;
 	  	String address;
 	  	String tel;
+	  	@Column(name="status")
 	  	String status;
-		public String getStatus() {
+public String getStatus() {
 			return status;
 		}
 		public void setStatus(String status) {
 			this.status = status;
 		}
+		//		public String getStatus() {
+//			return status;
+//		}
+//		public void setStatus(String status) {
+//			this.status = status;
+//		}
 		public int getId() {
 			return id;
 		}
