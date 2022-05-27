@@ -12,4 +12,5 @@ import com.warehouse.entity.Product;
 public interface ProductRepository extends JpaRepository<Product, Integer>{
 	@Query("select e from Product e where e.name like ?1")
 	List<Product> searchProduct(String search);
+	
 }

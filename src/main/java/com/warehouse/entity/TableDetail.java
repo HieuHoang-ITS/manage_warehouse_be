@@ -6,7 +6,14 @@ public class TableDetail {
 	String nhacungcap;
 	int soluong;
 	int gia;
+	String nameuser;
 	
+	public String getNameuser() {
+		return nameuser;
+	}
+	public void setNameuser(String nameuser) {
+		this.nameuser = nameuser;
+	}
 	public String getNamesanpham() {
 		return namesanpham;
 	}
