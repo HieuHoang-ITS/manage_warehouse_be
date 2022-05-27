@@ -16,6 +16,16 @@ public class User {
 	String email;
 	String tel;
 	String address;
+	
+	
+	public User(int id, String full_name, String email, String tel, String address) {
+		super();
+		this.id = id;
+		this.full_name = full_name;
+		this.email = email;
+		this.tel = tel;
+		this.address = address;
+	}
 	public int getId() {
 		return id;
 	}

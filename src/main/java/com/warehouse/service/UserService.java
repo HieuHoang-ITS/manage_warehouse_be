@@ -19,7 +19,7 @@ public class UserService {
 		super();
 		this.ur = ur;
 	}
-	public ResponseEntity<List> getAllUser() {
+	public ResponseEntity<List<User>> getAllUser() {
 		// TODO Auto-generated method stub
 		
 		return ResponseEntity.status(HttpStatus.OK).body(ur.findAll());
@@ -58,6 +58,7 @@ public class UserService {
 			return new ResponseEntity<String>("ok", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("NOT_FOUND",HttpStatus.NOT_FOUND);
-		
 	}
+	
+	
 }
