@@ -10,10 +10,7 @@ import com.warehouse.entity.Category;
 
 	@Repository
 	public interface CategoryRepository extends JpaRepository<Category, Integer>{
-<<<<<<< HEAD
 		 @Query("SELECT e FROM Category e ORDER BY e.id asc")
 		  List<Category> dm();
-=======
->>>>>>> 583fbde6685e5fffd971398f062aec3d009c03e1
 	}
 
