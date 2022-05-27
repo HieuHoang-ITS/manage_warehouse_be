@@ -34,7 +34,8 @@ public ResponseEntity<List> getAll(){
 	
 }
 @GetMapping("/{id}")
-public ResponseEntity findById(@PathVariable int id) {
+public ResponseEntity<Category> findById(@PathVariable int id) {
+	Category category= (Category) categoryService.getCategory(id).getBody();
 	return categoryService.getCategory(id);
 }
 @PostMapping("/insert")

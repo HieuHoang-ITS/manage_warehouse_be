@@ -1,6 +1,7 @@
 package com.warehouse.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,15 @@ import com.warehouse.repository.ProductRepository;
 public class ProductService {
 	@Autowired
 	private final ProductRepository pdr;
+	
+	@Autowired ProductRepository productRepository;
 	public ProductService(ProductRepository pdr) {
 		super();
 		this.pdr = pdr;
+	}
+	public List<Product> findAll()
+	{
+		return productRepository.findAll();
 	}
 	public ResponseEntity<List> getAllProduct() {
 		// TODO Auto-generated method stub
@@ -58,6 +65,17 @@ public class ProductService {
 		return new ResponseEntity<String>("NOT_FOUND",HttpStatus.NOT_FOUND);
 		
 	}
-	
+	public List<Product> searchProduct(String search)
+	{
+		return productRepository.searchProduct(search);
+	}
+	public Optional<Product> getbyid(int id)
+	{	
+		return productRepository.findById(id);
+	}
+	public void insertOrUpdate(Product product)
+	{
+		productRepository.save(product);
+	}
 
 }

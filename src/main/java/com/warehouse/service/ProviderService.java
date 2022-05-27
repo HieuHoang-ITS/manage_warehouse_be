@@ -12,7 +12,7 @@ import com.warehouse.repository.ProviderRepository;
 @Service
 public class ProviderService {
 	@Autowired
-	private final ProviderRepository pr;
+	ProviderRepository pr;
 	public ProviderService(ProviderRepository pr) {
 		super();
 		this.pr = pr;
@@ -32,8 +32,8 @@ public class ProviderService {
 		// TODO Auto-generated method stub
 		Provider newPv = pr.findById(id).map(provider -> {
 			provider.setName(pvd.getName());
-			provider.setStatus(pvd.getStatus());
-			provider.setAddress(pvd.getStatus());
+//			provider.setStatus(pvd.getStatus());
+//			provider.setAddress(pvd.getStatus());
 			provider.setTel(pvd.getTel());
 			return pr.save(provider);
 		}).orElseGet(() -> {
@@ -47,7 +47,7 @@ public class ProviderService {
 	public ResponseEntity getProvider(int id) {
 
 		// TODO Auto-generated method stub
-		return ResponseEntity.status(HttpStatus.OK).body(pr.findById(id));
+		return ResponseEntity.status(HttpStatus.OK).body(pr.findById(id).get());
 	}
 	public ResponseEntity Delele(int id) {
 		boolean exists = pr.existsById(id);
@@ -57,5 +57,9 @@ public class ProviderService {
 		}
 		return new ResponseEntity<String>("NOT_FOUND",HttpStatus.NOT_FOUND);
 		
+	}
+	public Provider getproviderbyId(int id)
+	{
+		return pr.findById(id).get();
 	}
 }

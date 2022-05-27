@@ -47,7 +47,7 @@ public class CategoryService {
 	public ResponseEntity getCategory(int id) {
 
 		// TODO Auto-generated method stub
-		return ResponseEntity.status(HttpStatus.OK).body(cr.findById(id));
+		return ResponseEntity.status(HttpStatus.OK).body(cr.findById(id).get());
 	}
 	public ResponseEntity Delele(int id) {
 		boolean exists = cr.existsById(id);

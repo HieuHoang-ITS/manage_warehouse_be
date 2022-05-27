@@ -7,6 +7,5 @@ import com.warehouse.entity.Category;
 
 	@Repository
 	public interface CategoryRepository extends JpaRepository<Category, Integer>{
-		
 	}
 
