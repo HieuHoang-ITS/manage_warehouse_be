@@ -49,33 +49,28 @@ public class Controller {
 	OrderDetailService orderDetailService;
 	@Autowired
 	ProviderService proviService;
-//	@GetMapping("/products")
-//	public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title)
-//	{
-//		if(title==null)
-//=======
-//		@Autowired ProductService productService;
-//		
-//		@GetMapping("/products")
-//		public ResponseEntity<List<Product>> getAllProducts()
-//>>>>>>> develop
-//		{
-//			List<Product> products=productService.findAll();
-//			if (products.isEmpty()) {
-//				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//			}
-//			return new ResponseEntity<>(products, HttpStatus.OK);
-//		}
-//<<<<<<< HEAD
-//		else {
-//			List<Product> products=productService.searchProduct(title);
-//			if(products.isEmpty())
-//			{
-//				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//			}
-//		return new ResponseEntity<>(products, HttpStatus.OK);
-//		}
-//	}
+	@GetMapping("/products")
+	public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title)
+	{
+		if(title==null)
+
+		{
+			List<Product> products=productService.findAll();
+			if (products.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(products, HttpStatus.OK);
+		}
+
+		else {
+			List<Product> products=productService.searchProduct(title);
+			if(products.isEmpty())
+			{
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+		return new ResponseEntity<>(products, HttpStatus.OK);
+		}
+	}
 	@GetMapping("/orderchoxacnhan/{type}")
 	public ResponseEntity<List<Order>> getAllOrderStatus(@PathVariable("type") int type)
 	{
@@ -186,7 +181,7 @@ public class Controller {
 //	}
 	@GetMapping("/search/{madonhang}/{nguoiphutrach}")
 	public ResponseEntity<List<Order>> searcHoadon(@PathVariable(required = false) int madonhang,
-			@PathVariable(required = false) int nguoiphutrach , @RequestParam(required = false) Date ngay,
+			@PathVariable(required = false) int nguoiphutrach , @RequestParam(required = false) String ngay,
 			@RequestParam(required = false) String loai ){
 		return new ResponseEntity<List<Order>>(orderService.search(madonhang, nguoiphutrach, ngay,loai), HttpStatus.OK);
 	}
