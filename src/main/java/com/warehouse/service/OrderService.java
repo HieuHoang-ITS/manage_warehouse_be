@@ -113,9 +113,13 @@ public class OrderService {
 		List<User> users = orderRepository.findAllUser();
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
-	public List<ThongKeLoai> thongKeLoai(int thang, int nam)
+	public List<ThongKeLoai> thongKeLoainhap(int thang, int nam)
 	{
-		return orderRepository.Thongkeloai(thang, nam);
+		return orderRepository.Thongkeloainhap(thang, nam);
+	}
+	public List<ThongKeLoai> thongKeLoaixuat(int thang, int nam)
+	{
+		return orderRepository.Thongkeloaixuat(thang, nam);
 	}
 
 }

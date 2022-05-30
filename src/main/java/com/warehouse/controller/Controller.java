@@ -216,11 +216,30 @@ public class Controller {
 	}
 
 	
-	@GetMapping("thongkeloai/{thang}/{nam}")
+	@GetMapping("thongkeloainhap/{thang}/{nam}")
 	public ResponseEntity<List<ThongKeLoai>> thongKeLoai(@PathVariable("thang") int thang, @PathVariable("nam") int nam)
 	{
 		long soluongban=0;
-		List<ThongKeLoai> thongkeloais=orderService.thongKeLoai(thang, nam);
+		List<ThongKeLoai> thongkeloais=orderService.thongKeLoainhap(thang, nam);
+		List<ThongKeLoai> thongkeloaiss=new ArrayList<ThongKeLoai>();
+		for (ThongKeLoai thongKeLoai : thongkeloais) {
+			soluongban+=thongKeLoai.getTongsoluong();
+		}
+		System.out.println(soluongban);
+		for (ThongKeLoai thongKeLoai : thongkeloais) {
+			System.out.println((double)thongKeLoai.getTongsoluong()/soluongban);
+			Double phantram=((double)thongKeLoai.getTongsoluong()/soluongban);
+			
+			thongKeLoai.setPhantram(phantram*100);
+			thongkeloaiss.add(thongKeLoai);
+		}
+		return new ResponseEntity<List<ThongKeLoai>>(thongkeloaiss,HttpStatus.OK);
+	}
+	@GetMapping("thongkeloaixuat/{thang}/{nam}")
+	public ResponseEntity<List<ThongKeLoai>> thongKeLoaixuat(@PathVariable("thang") int thang, @PathVariable("nam") int nam)
+	{
+		long soluongban=0;
+		List<ThongKeLoai> thongkeloais=orderService.thongKeLoaixuat(thang, nam);
 		List<ThongKeLoai> thongkeloaiss=new ArrayList<ThongKeLoai>();
 		for (ThongKeLoai thongKeLoai : thongkeloais) {
 			soluongban+=thongKeLoai.getTongsoluong();

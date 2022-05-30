@@ -49,7 +49,12 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	List<Order> search(int id1, int nguoiphutrach, String loai, Date date, Date date1);
 	@Query("SELECT new com.warehouse.entity.ThongKeLoai(c.name, COUNT( p.id) AS TONGSO, sum(f.amount)) from Order_Detail f join Order"
 			+ " o on f.order_id = o.id join Product p on p.id=f.product_id join Category c on p.category_id=c.id"
-			+ " WHERE extract(month from o.created_at) = ?1 AND extract(year from o.created_at) = ?2"
+			+ " WHERE extract(month from o.created_at) = ?1 AND extract(year from o.created_at) = ?2 and o.trading_type='import'"
 			+ " group by c.name")
-	List<ThongKeLoai> Thongkeloai(int thang, int nam);
+	List<ThongKeLoai> Thongkeloainhap(int thang, int nam);
+	@Query("SELECT new com.warehouse.entity.ThongKeLoai(c.name, COUNT( p.id) AS TONGSO, sum(f.amount)) from Order_Detail f join Order"
+			+ " o on f.order_id = o.id join Product p on p.id=f.product_id join Category c on p.category_id=c.id"
+			+ " WHERE extract(month from o.created_at) = ?1 AND extract(year from o.created_at) = ?2 and o.trading_type='export'"
+			+ " group by c.name")
+	List<ThongKeLoai> Thongkeloaixuat(int thang, int nam);
 }
