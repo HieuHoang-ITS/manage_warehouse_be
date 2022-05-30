@@ -13,6 +13,17 @@ public class Order_Detail {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+	
+	
+	public Order_Detail() {
+		super();
+	}
+	public Order_Detail(int product_id, int order_id, int amount) {
+		super();
+		this.product_id = product_id;
+		this.order_id = order_id;
+		this.amount = amount;
+	}
 	public int getId() {
 		return id;
 	}
@@ -37,6 +48,13 @@ public class Order_Detail {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
+	
+	@Override
+	public String toString() {
+		return "Order_Detail [id=" + id + ", product_id=" + product_id + ", order_id=" + order_id + ", amount=" + amount
+				+ "]";
+	}
+
 	int product_id;
 	@Column(name="export_invoice_id")
 	int order_id;
