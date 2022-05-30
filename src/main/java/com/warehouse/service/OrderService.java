@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.warehouse.entity.Order;
 import com.warehouse.entity.Order_Detail;
+import com.warehouse.entity.ThongKeLoai;
 
 import java.util.List;
 
@@ -111,6 +112,10 @@ public class OrderService {
 	public ResponseEntity<List<User>> findAllUser() {
 		List<User> users = orderRepository.findAllUser();
 		return ResponseEntity.status(HttpStatus.OK).body(users);
+	}
+	public List<ThongKeLoai> thongKeLoai(int thang, int nam)
+	{
+		return orderRepository.Thongkeloai(thang, nam);
 	}
 
 }
