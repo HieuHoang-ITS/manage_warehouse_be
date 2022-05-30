@@ -14,13 +14,30 @@ public class Order {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-	int user_id;
-	String trading_type;
-	String customer_name;
-	String customer_phone;
-	String status;
-	String description;
+	private int user_id;
+	private String trading_type;
+	private String customer_name;
+	private String customer_phone;
+	private String status;
+	private String description;
 	int total_price;
+	
+	
+	public Order() {
+		super();
+	}
+	public Order( int user_id, String trading_type, String customer_name, String customer_phone, String status,
+			String description, int total_price, Date created_at) {
+		super();
+		this.user_id = user_id;
+		this.trading_type = trading_type;
+		this.customer_name = customer_name;
+		this.customer_phone = customer_phone;
+		this.status = status;
+		this.description = description;
+		this.total_price = total_price;
+		this.created_at = created_at;
+	}
 	public int getId() {
 		return id;
 	}

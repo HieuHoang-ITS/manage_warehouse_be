@@ -21,6 +21,9 @@ public interface OrderDetailRepository extends JpaRepository<Order_Detail, Integ
 			+ "FROM Order_Detail as o, Product as pr, Category as ca, Provider as pro "
 			+ "WHERE o.order_id= :orderid and o.product_id = pr.id and pr.category_id = ca.id and pr.provider_id = pro.id")
 	List<DetailOrder_Display> findAllOrderID(@Param("orderid") int orderid);
+	
+	@Query(value = "select o.id from detail_trading_invoice as o order by o.id desc limit 1", nativeQuery = true)
+	int getlastestIndex();
 }
 
 //}
