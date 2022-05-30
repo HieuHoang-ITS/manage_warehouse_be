@@ -35,11 +35,11 @@ public class OrderController {
 	
 	@GetMapping("/export")
 	public ResponseEntity<List<CustomOrder>> getAllExportOrders(){
-		return orderService.findIEOrders("EXPORT");
+		return orderService.findIEOrders("export");
 	}
 	@GetMapping("/import")
 	public ResponseEntity<List<CustomOrder>> getAllImportOrders(){
-		return orderService.findIEOrders("IMPORT");
+		return orderService.findIEOrders("import");
 	}
 	@GetMapping("/register/product")
 	public ResponseEntity<List<CustomProductDisplay>> getProduct(){

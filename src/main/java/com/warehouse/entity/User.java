@@ -26,6 +26,9 @@ public class User {
 		this.tel = tel;
 		this.address = address;
 	}
+	public User() {
+		super();
+	}
 	public int getId() {
 		return id;
 	}
