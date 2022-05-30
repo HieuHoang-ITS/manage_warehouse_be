@@ -21,7 +21,7 @@ import com.warehouse.entity.User;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Query(value = "Select new com.warehouse.entity.CustomOrder(o.id, o.user_id, o.trading_type, o.customer_name, o.customer_phone, o.status, o.description, o.total_price,us.full_name as user_name, o.created_at) From Order as o, User as us where o.trading_type=?1 and o.user_id = us.id")
 	List<CustomOrder> findIEOrders(String type);
-
+	
 	@Query(value = "SELECT new com.warehouse.entity.CustomProductDisplay("
 			+ "pr.id, pro.id as provider_id, pr.name as product_name, ca.name as category_name, pro.name as provider_name, pro.address, pr.amount, pr.unit, ca.status, pr.price"
 			+ ")" + "FROM Product as pr, Category as ca, Provider as pro "
