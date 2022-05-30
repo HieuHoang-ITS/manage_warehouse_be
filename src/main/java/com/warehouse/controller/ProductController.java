@@ -1,7 +1,5 @@
 package com.warehouse.controller;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.warehouse.entity.Category;
 import com.warehouse.entity.Product;
 import com.warehouse.service.ProductService;
 
@@ -37,19 +36,27 @@ public class ProductController {
 		return productService.getProduct(id);
 	}
 	@PostMapping("/insert")
-	public ResponseEntity insertCategory(@RequestBody Product newProduct){
+	public ResponseEntity insertProduct(@RequestBody Product newProduct){
 		
 		return productService.insert(newProduct);
 
 	}
 	@PutMapping("/update/{id}")
 
-	public ResponseEntity updateCategory(@RequestBody Product pod, @PathVariable int id) {
-		return productService.update(pod, id);
+	public ResponseEntity updateProduct(@RequestBody Product pod, @PathVariable int id)
+		{ Product product= (Product) productService.getProduct(id).getBody();
+		product.setName(pod.getName());
+		product.setUnit(pod.getUnit());
+		product.setAmount(pod.getAmount());
+		product.setPrice(pod.getPrice());
+		product.setCategory_id(pod.getCategory_id());
+		product.setProvider_id(pod.getProvider_id());
+		
+			return productService.update(product);
 		
 	}
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> Deletecategory(@PathVariable int id) {
+	public ResponseEntity<String> DeleteProduct(@PathVariable int id) {
 		return productService.Delele(id);
 		
 				

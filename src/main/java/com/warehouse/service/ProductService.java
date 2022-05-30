@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.warehouse.entity.Category;
 import com.warehouse.entity.Product;
 import com.warehouse.repository.ProductRepository;
 
@@ -26,7 +28,7 @@ public class ProductService {
 	}
 	public ResponseEntity<List> getAllProduct() {
 		// TODO Auto-generated method stub
-		
+		List<Category> cas=pdr.dm();
 		return ResponseEntity.status(HttpStatus.OK).body(pdr.findAll());
 		
 		
@@ -35,19 +37,9 @@ public class ProductService {
 		pdr.save(product);
 	return ResponseEntity.status(HttpStatus.OK).body("Inser category successfully");
 }
-	public ResponseEntity update(Product pod, int id) {
+	public ResponseEntity update(Product pod) {
 		// TODO Auto-generated method stub
-		Product newpod = pdr.findById(id).map(product -> {
-			product.setName(pod.getName());
-			product.setUnit(pod.getUnit());
-			product.setAmount(pod.getAmount());
-			product.setPrice(pod.getPrice());
-			return pdr.save(product);
-		}).orElseGet(() -> {
-			pod.setId(id);
-			return pdr.save(pod);
-
-		});
+		pdr.save(pod);
 		return ResponseEntity.status(HttpStatus.OK).body("update successfully");	
 		}
 	

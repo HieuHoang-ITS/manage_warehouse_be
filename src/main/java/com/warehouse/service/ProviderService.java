@@ -1,6 +1,7 @@
 package com.warehouse.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class ProviderService {
 		return ResponseEntity.status(HttpStatus.OK).body("update successfully");	
 		}
 	
-	public ResponseEntity getProvider(int id) {
+	public ResponseEntity<Provider> getProvider(int id) {
 
 		// TODO Auto-generated method stub
 		return ResponseEntity.status(HttpStatus.OK).body(pr.findById(id).get());
@@ -58,8 +59,8 @@ public class ProviderService {
 		return new ResponseEntity<String>("NOT_FOUND",HttpStatus.NOT_FOUND);
 		
 	}
-	public Provider getproviderbyId(int id)
+	public Optional<Provider> getproviderbyId(int id)
 	{
-		return pr.findById(id).get();
+		return pr.findById(id);
 	}
 }
