@@ -54,6 +54,6 @@ public class ProviderController {
 	}
 	@GetMapping("/by/{id}")
 	public Provider findid(@PathVariable int id) {
-		return providerService.getproviderbyId(id);
+		return providerService.getproviderbyId(id).get();
 	}
 }

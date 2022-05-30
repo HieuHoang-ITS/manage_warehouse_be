@@ -35,7 +35,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Query("select o from Order  o where o.status=?1 and o.trading_type=?2")
 	List<Order> getALLOrderStatus(String status, String type);
 	
-	@Query("select o from Order o join User d on o.user_id=d.id where " 
+	@Query("select o from Order o join User d on o.user_id=d.id where o.status='2' and " 
 	+ "((?3 in ('o'))  OR  o.trading_type like ?3)"
 			+ "AND ((?2 IN (0)) OR  d.id = ?2)" + "AND ((?1 IN (0)) OR  o.id = ?1)"
 			+ "AND ((?4 IN (?5)) OR  o.created_at = ?4)")
