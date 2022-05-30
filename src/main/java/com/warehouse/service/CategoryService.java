@@ -30,26 +30,18 @@ public class CategoryService {
 		cr.save(category);
 	return ResponseEntity.status(HttpStatus.OK).body("Inser category successfully");
 }
-	public ResponseEntity update(Category ctg, int id) {
-		// TODO Auto-generated method stub
-		Category newCtg = cr.findById(id).map(category -> {
-			category.setName(ctg.getName());
-			category.setStatus(ctg.getStatus());
-			return cr.save(category);
-		}).orElseGet(() -> {
-			ctg.setId(id);
-			return cr.save(ctg);
-
-		});
+	public ResponseEntity update(Category ctg) {
+		cr.save(ctg);
 		return ResponseEntity.status(HttpStatus.OK).body("update successfully");	
 		}
-	
+
 	public ResponseEntity getCategory(int id) {
 
 		// TODO Auto-generated method stub
 		return ResponseEntity.status(HttpStatus.OK).body(cr.findById(id).get());
 	}
 	public ResponseEntity Delele(int id) {
+		System.out.println();
 		boolean exists = cr.existsById(id);
 		if (exists) {
 			cr.deleteById(id);
@@ -58,4 +50,5 @@ public class CategoryService {
 		return new ResponseEntity<String>("NOT_FOUND",HttpStatus.NOT_FOUND);
 		
 	}
+	
 }

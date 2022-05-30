@@ -16,7 +16,7 @@ import com.warehouse.entity.Provider;
 import com.warehouse.service.ProviderService;
 
 @RestController
-@RequestMapping(path="api/v1/Providers")
+@RequestMapping(path = "api/v1/Providers")
 public class ProviderController {
 	@Autowired
 	private ProviderService providerService;
@@ -25,33 +25,36 @@ public class ProviderController {
 		super();
 		this.providerService = providerService;
 	}
+
 	@GetMapping("")
-	public ResponseEntity<List> getAll(){
+	public ResponseEntity<List> getAll() {
 		return providerService.getAllProvider();
-		
+
 	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity findById(@PathVariable int id) {
 		return providerService.getProvider(id);
 	}
+
 	@PostMapping("/insert")
-	public ResponseEntity insertCategory(@RequestBody Provider newProvider){
-		
+	public ResponseEntity insertCategory(@RequestBody Provider newProvider) {
 		return providerService.insert(newProvider);
 
 	}
-	@PutMapping("/{id}")
 
+	@PutMapping("/{id}")
 	public ResponseEntity updateCategory(@RequestBody Provider pvd, @PathVariable int id) {
 		return providerService.update(pvd, id);
-		
+
 	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<String> Deletecategory(@PathVariable int id) {
 		return providerService.Delele(id);
-		
-				
+
 	}
+
 	@GetMapping("/by/{id}")
 	public Provider findid(@PathVariable int id) {
 		return providerService.getproviderbyId(id);
