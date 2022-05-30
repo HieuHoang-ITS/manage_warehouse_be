@@ -45,7 +45,6 @@ public class OrderService {
 		}
 
 	}
-
 	public Optional<Order> getorderbyId(int id) {
 		return orderRepository.findById(id);
 	}
@@ -54,27 +53,31 @@ public class OrderService {
 		orderRepository.save(order);
 	}
 
-// @GetMapping("search/{madonhang}/{loai}/{ngaynhap}/{ngayxuat}/{nguoiphutrach}")
-// int madonhang, String loai, Date ngaynhap, Date ngayxuat, String nguoiphutrach
-	public List<Order> search(int madonhang, int nguoiphutrach, Date ngay, String loai) {
-		try {
-			// Date sellDate = new SimpleDateFormat("yyyy-MM-dd").parse("1/1/19");
-//		if(loai.contains(""))
-//		{
-//			String d=null;
-//		 return orderRepository.search(madonhang,nguoiphutrach,d,ngay);
-//		 return orderRepository.search(madonhang,nguoiphutrach,loai,ngay);
-//		}
-			Date sellDat = new SimpleDateFormat("yyyy-MM-dd").parse("2011-01-18");
-			Date sellDa = new SimpleDateFormat("yyyy-MM-dd").parse("2011-01-18");
-			System.out.println(sellDat);
-			return orderRepository.search(0, 0, "import", sellDat, sellDa);
+	// @GetMapping("search/{madonhang}/{loai}/{ngaynhap}/{ngayxuat}/{nguoiphutrach}")
+	// int madonhang, String loai, Date ngaynhap, Date ngayxuat, String nguoiphutrach
+	 public List<Order> search(int madonhang, int nguoiphutrach, String ngay,String loai)
+	 {
+		 try {
+			//Date sellDate = new SimpleDateFormat("yyyy-MM-dd").parse("1/1/19");
+//			if(loai.contains(""))
+//			{
+//				String d=null;
+//			 return orderRepository.search(madonhang,nguoiphutrach,d,ngay);
+//			 return orderRepository.search(madonhang,nguoiphutrach,loai,ngay);
+//			}
+			 System.out.println(ngay);
+			Date sellDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngay);
+			Date sellDa = new SimpleDateFormat("yyyy-MM-dd").parse("2000-10-10");
+			System.out.println(sellDa);
+//			System.out.println(ngay);
+			return orderRepository.search(madonhang,nguoiphutrach,loai,sellDate,sellDa);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return orderRepository.findAll();
-	}
+		 return orderRepository.findAll();
+	 }
+
 
 	public ResponseEntity<List<CustomOrder>> findIEOrders(String type) {
 		List<CustomOrder> orders;
