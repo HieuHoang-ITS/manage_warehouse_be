@@ -40,7 +40,7 @@ public ResponseEntity<Category> findById(@PathVariable int id) {
 	Category category= (Category) categoryService.getCategory(id).getBody();
 	return categoryService.getCategory(id);
 }
-@PostMapping("/insert/")
+@PostMapping("/insert")
 public ResponseEntity insertCategory(@RequestBody Category newCategory){
 	System.out.println(newCategory.toString());
 	return categoryService.insert(newCategory);
