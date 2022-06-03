@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.warehouse.entity.ThongKeBaSanPhamDuocNhapNhieuNhat;
 import com.warehouse.entity.ThongKeSanPhamTheoThang;
 import com.warehouse.entity.Thongke;
 import com.warehouse.service.OrderService;
@@ -32,6 +33,12 @@ public class ThongkeController {
 	public ResponseEntity<List<ThongKeSanPhamTheoThang>> thongketheothangnhap(@PathVariable("thang") 
 	int thang,@PathVariable("nam") int nam){
 		return new ResponseEntity<List<ThongKeSanPhamTheoThang>>(orderService.thongKeSanPhamTheoThangnhap(thang, nam),HttpStatus.OK);
+	}
+	@GetMapping("/thongkebasanphamnhapnhieunhat/{thang}/{nam}")
+	public ResponseEntity<List<ThongKeBaSanPhamDuocNhapNhieuNhat>>thongke3sanphamnhapnhieunhat(@PathVariable("thang")int thang,@PathVariable("nam")int nam){
+		
+		List<ThongKeBaSanPhamDuocNhapNhieuNhat> thongke3=orderService.thongKe3sanphamnhapnhieunhat(thang, nam);
+		return new ResponseEntity<List<ThongKeBaSanPhamDuocNhapNhieuNhat>>(orderService.thongKe3sanphamnhapnhieunhat(thang, nam),HttpStatus.OK);
 	}
 
 }

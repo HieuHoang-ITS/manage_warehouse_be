@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 import com.warehouse.entity.CustomOrder;
 import com.warehouse.entity.CustomProductDisplay;
 import com.warehouse.entity.Order;
+import com.warehouse.entity.ThongKeBaSanPhamDuocNhapNhieuNhat;
+import com.warehouse.entity.ThongKeLoai;
 import com.warehouse.entity.ThongKeSanPhamTheoThang;
 import com.warehouse.entity.Thongke;
 import com.warehouse.entity.User;
@@ -58,21 +60,21 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 //			+ " group by EXTRACT(month from t.created_at)"
 //			)
 //	int tongsonhap(int thang, int nam);
-//	@Query("SELECT new com.warehouse.entity.ThongKeSanPhamTheoThang ( p.name,sum(t.total_price),COUNT( p.id) AS TONGSO)"
-//			+ " from Order t "
-//			+ "join Order_Detail f"
-//			+ "	on t.id=f.order_id join Product p on f.product_id=p.id"
-//			+ " WHERE EXTRACT(month from t.created_at) = ?1"
-//			+ " AND EXTRACT( year from t.created_at) = ?2 "
-//			+ " AND t.trading_type  like 'import'"
-//			+ " group by p.name, p.id order by COUNT(p.id) desc")
-//	List<ThongKeSanPhamTheoThang> thongke3sanphamnhapnhieunhat(int thang, int nam);
+	@Query("SELECT new com.warehouse.entity.ThongKeBaSanPhamDuocNhapNhieuNhat( p.name,sum(t.total_price),COUNT( p.id),p.id AS TONGSO)"
+			+ " from Order t "
+			+ "join Order_Detail f"
+			+ "	on t.id=f.order_id join Product p on f.product_id=p.id"
+			+ " WHERE EXTRACT(month from t.created_at) = ?1"
+			+ " AND EXTRACT( year from t.created_at) = ?2 "
+			+ " AND t.trading_type  like 'import'"
+			+ " group by p.name, p.id order by COUNT(p.id) desc, sum(t.total_price) desc")
+	List<ThongKeBaSanPhamDuocNhapNhieuNhat> thongke3sanphamnhapnhieunhat(int thang, int nam);
 
 
 	@Query(value = "Select new com.warehouse.entity.CustomOrder(o.id, o.user_id, "
 			+ "o.trading_type, o.customer_name, o.customer_phone, o.status, o.description,"
 			+ " o.total_price,us.full_name as user_name, o.created_at) From Order as o, User as"
-			+ " us where o.trading_type=?1 and o.user_id = us.id")
+			+ " us where o.trading_type=?1 and o.user_id = us.id" )
 	List<CustomOrder> findIEOrders(String type);
 	
 	@Query(value = "SELECT new com.warehouse.entity.CustomProductDisplay("
@@ -95,4 +97,14 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 			+ "AND ((?2 IN (0)) OR  d.id = ?2)" + "AND ((?1 IN (0)) OR  o.id = ?1)"
 			+ "AND ((?4 IN (?5)) OR  o.created_at = ?4)")
 	List<Order> search(int id1, int nguoiphutrach, String loai, Date date, Date date1);
+	@Query("SELECT new com.warehouse.entity.ThongKeLoai(c.name, COUNT( p.id) AS TONGSO, sum(f.amount)) from Order_Detail f join Order"
+			+ " o on f.order_id = o.id join Product p on p.id=f.product_id join Category c on p.category_id=c.id"
+			+ " WHERE extract(month from o.created_at) = ?1 AND extract(year from o.created_at) = ?2 and o.trading_type='import'"
+			+ " group by c.name")
+	List<ThongKeLoai> Thongkeloainhap(int thang, int nam);
+	@Query("SELECT new com.warehouse.entity.ThongKeLoai(c.name, COUNT( p.id) AS TONGSO, sum(f.amount)) from Order_Detail f join Order"
+			+ " o on f.order_id = o.id join Product p on p.id=f.product_id join Category c on p.category_id=c.id"
+			+ " WHERE extract(month from o.created_at) = ?1 AND extract(year from o.created_at) = ?2 and o.trading_type='export'"
+			+ " group by c.name")
+	List<ThongKeLoai> Thongkeloaixuat(int thang, int nam);
 }
