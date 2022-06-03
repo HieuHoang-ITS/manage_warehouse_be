@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.warehouse.entity.Order;
 import com.warehouse.entity.Order_Detail;
+import com.warehouse.entity.ThongKeLoai;
 
 import java.util.List;
 
@@ -58,20 +59,14 @@ public class OrderService {
 	}
 
 	// @GetMapping("search/{madonhang}/{loai}/{ngaynhap}/{ngayxuat}/{nguoiphutrach}")
-	// int madonhang, String loai, Date ngaynhap, Date ngayxuat, String
-	// nguoiphutrach
-	public List<Order> search(int madonhang, int nguoiphutrach, String ngay, String loai) {
-		try {
-			// Date sellDate = new SimpleDateFormat("yyyy-MM-dd").parse("1/1/19");
-//			if(loai.contains(""))
-//			{
-//				String d=null;
-//			 return orderRepository.search(madonhang,nguoiphutrach,d,ngay);
-//			 return orderRepository.search(madonhang,nguoiphutrach,loai,ngay);
-//			}
-			System.out.println(ngay);
+
+	// int madonhang, String loai, Date ngaynhap, Date ngayxuat, String nguoiphutrach
+	 public List<Order> search(int madonhang, int nguoiphutrach, String ngay,String loai)
+	 {
+		 try {
+			 System.out.println(ngay);
 			Date sellDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngay);
-			Date sellDa = new SimpleDateFormat("yyyy-MM-dd").parse("2000-10-10");
+			Date sellDa = new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
 			System.out.println(sellDa);
 //			System.out.println(ngay);
 			return orderRepository.search(madonhang, nguoiphutrach, loai, sellDate, sellDa);
@@ -79,14 +74,17 @@ public class OrderService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return orderRepository.findAll();
-	}
+
+		 return orderRepository.findAll();
+	 }
+
 
 	public ResponseEntity<List<CustomOrder>> findIEOrders(String type) {
 		List<CustomOrder> orders;
 		orders = orderRepository.findIEOrders(type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
+
 
 	public ResponseEntity<List<CustomOrder>> findAllProcessedOrders() {
 		List<CustomOrder> orders;
@@ -164,6 +162,14 @@ public class OrderService {
 	public ResponseEntity<List<User>> findAllUser() {
 		List<User> users = orderRepository.findAllUser();
 		return ResponseEntity.status(HttpStatus.OK).body(users);
+	}
+	public List<ThongKeLoai> thongKeLoainhap(int thang, int nam)
+	{
+		return orderRepository.Thongkeloainhap(thang, nam);
+	}
+	public List<ThongKeLoai> thongKeLoaixuat(int thang, int nam)
+	{
+		return orderRepository.Thongkeloaixuat(thang, nam);
 	}
 
 	public ResponseEntity deleteFlag(int[] deleteIDs) {
