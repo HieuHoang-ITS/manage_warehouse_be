@@ -1,7 +1,5 @@
 package com.warehouse.controller;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
@@ -60,5 +58,10 @@ public ResponseEntity<String> Deletecategory(@PathVariable int id) {
 	return categoryService.Delele(id);
 	
 			
+}
+@GetMapping("/search/{name}")
+public ResponseEntity<List<Category>>searchCategory(@PathVariable String name) {
+	return  new ResponseEntity<List<Category>>(categoryService.search(name),HttpStatus.OK);
+	
 }
 }

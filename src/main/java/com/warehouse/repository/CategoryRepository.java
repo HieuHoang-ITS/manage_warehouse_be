@@ -10,7 +10,10 @@ import com.warehouse.entity.Category;
 
 	@Repository
 	public interface CategoryRepository extends JpaRepository<Category, Integer>{
-		 @Query("SELECT e FROM Category e ORDER BY e.id asc")
+		 @Query("SELECT c FROM Category as c  ORDER BY c.id asc")
 		  List<Category> dm();
+		 @Query("SELECT c FRom Category as c WHERE name like %?1%")
+		 List<Category>search(String name);
+		
 	}
 

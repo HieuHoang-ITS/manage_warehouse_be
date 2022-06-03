@@ -70,4 +70,10 @@ public class Product {
 	public void setProvider_id(int provider_id) {
 		this.provider_id = provider_id;
 	}
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", unit=" + unit + ", amount=" + amount + ", price=" + price
+				+ ", category_id=" + category_id + ", provider_id=" + provider_id + "]";
+	}
+	
 }

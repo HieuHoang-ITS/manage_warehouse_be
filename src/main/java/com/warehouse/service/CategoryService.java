@@ -46,5 +46,14 @@ public class CategoryService {
 		return new ResponseEntity<String>("NOT_FOUND",HttpStatus.NOT_FOUND);
 		
 	}
+	public List<Category> search(String name) {
+		try {
+			return cr.search(name);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cr.findAll();
+	}
 	
 }
