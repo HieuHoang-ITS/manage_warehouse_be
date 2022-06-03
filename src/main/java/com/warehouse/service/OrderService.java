@@ -127,7 +127,7 @@ public class OrderService {
 				dayAfter = c.getTime();
 				} 
 			catch (Exception e){}
-		System.out.println("["+id+" - "+uid+" - "+status+" - "+date+"]");
+		System.out.println("["+id+" - "+uid+" - "+status+" - "+date+" - "+type+"]");
 		orders = orderRepository.searchByFilter(id, uid, status, date, nullDate, dayAfter, type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}

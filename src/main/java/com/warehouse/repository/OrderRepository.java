@@ -39,12 +39,13 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 			+ " o.trading_type, o.customer_name, o.customer_phone, o.status, o.description,"
 			+ " o.total_price,us.full_name as user_name, o.created_at) "
 			+ " FROM Order as o JOIN User as us ON o.user_id = us.id" 
-			+ " WHERE o.delete_flag=false"
+			+ " WHERE"
+			+ " ((:type like 'record') or o.delete_flag=false)"
 			+ " and ((:id in (0)) or o.id=:id)" 
 			+ " and ((:user_id in (0)) or us.id=:user_id)"
 			+ " and ((:status is null) or o.status = :status)"
 			+ " and (:date in (:nullDate) or (o.created_at >= :date and o.created_at<:da))"
-			+ " and (o.trading_type=:type)")
+			+ " and ((:type like 'record') or o.trading_type=:type)")
 	List<CustomOrder> searchByFilter(int id, @Param("user_id") int uid, @Param("status") String status,
 			@Param("date") Date date, @Param("nullDate") Date nullDate, @Param("da") Date dayAfter, @Param("type") String type);
 
