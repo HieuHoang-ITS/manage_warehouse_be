@@ -1,5 +1,17 @@
 package com.warehouse.service;
 
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.warehouse.entity.Order;
+import com.warehouse.entity.ThongKeSanPhamTheoThang;
+import com.warehouse.entity.Thongke;
+import com.warehouse.repository.OrderRepository;
+
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.warehouse.entity.Order;
 import com.warehouse.entity.Order_Detail;
+import com.warehouse.entity.ThongKeBaSanPhamDuocNhapNhieuNhat;
 import com.warehouse.entity.ThongKeLoai;
 
 import java.util.List;
@@ -40,6 +53,17 @@ public class OrderService {
 	OrderRepository orderRepository;
 	@Autowired
 	OrderDetailRepository orderDetailRepository;
+
+	public List<Thongke> th11()
+	{
+		return orderRepository.thongKeTheoThang();
+	}
+	public List<ThongKeSanPhamTheoThang> thongKeSanPhamTheoThang(int thang, int nam){
+		return orderRepository.thongkesanphamtheothang(thang, nam);
+	}
+	public List<ThongKeSanPhamTheoThang> thongKeSanPhamTheoThangnhap(int thang, int nam){
+		return orderRepository.thongkesanphamtheothangnhap(thang, nam);
+	}
 
 	public List<Order> getAllOrderStatus(String status, int type) {
 		if (type == 1) {
@@ -171,12 +195,20 @@ public class OrderService {
 	{
 		return orderRepository.Thongkeloaixuat(thang, nam);
 	}
-
 	public ResponseEntity deleteFlag(int[] deleteIDs) {
 		for (int i : deleteIDs) {
 			orderRepository.deleteFlags(i);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Deleted ID=[" + deleteIDs + "]");
 	}
+	public List<ThongKeBaSanPhamDuocNhapNhieuNhat> thongKe3sanphamnhapnhieunhat(int thang, int nam){
+		List<ThongKeBaSanPhamDuocNhapNhieuNhat> products;
+		List<ThongKeBaSanPhamDuocNhapNhieuNhat> subProducts;
 
-}
+		products =  orderRepository.thongke3sanphamnhapnhieunhat( thang,  nam);
+		subProducts = products.subList(0, 3);
+		
+		return subProducts;
+	}
+	
+}	
