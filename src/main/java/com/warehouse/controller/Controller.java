@@ -1,5 +1,6 @@
 package com.warehouse.controller;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.warehouse.entity.Order_Detail;
 import com.warehouse.entity.Product;
 import com.warehouse.entity.Provider;
 import com.warehouse.entity.TableDetail;
+import com.warehouse.entity.ThongKeLoai;
 import com.warehouse.entity.User;
 import com.warehouse.service.CategoryService;
 import com.warehouse.service.OrderDetailService;
@@ -49,38 +51,37 @@ public class Controller {
 	OrderDetailService orderDetailService;
 	@Autowired
 	ProviderService proviService;
-//	@GetMapping("/products")
-//	public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title)
-//	{
-//		if(title==null)
-//=======
-//		@Autowired ProductService productService;
-//		
-//		@GetMapping("/products")
-//		public ResponseEntity<List<Product>> getAllProducts()
-//>>>>>>> develop
-//		{
-//			List<Product> products=productService.findAll();
-//			if (products.isEmpty()) {
-//				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//			}
-//			return new ResponseEntity<>(products, HttpStatus.OK);
-//		}
-//<<<<<<< HEAD
-//		else {
-//			List<Product> products=productService.searchProduct(title);
-//			if(products.isEmpty())
-//			{
-//				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//			}
-//		return new ResponseEntity<>(products, HttpStatus.OK);
-//		}
-//	}
+	@GetMapping("/products")
+	public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String title)
+	{
+		if(title==null)
+
+		{
+			List<Product> products=productService.findAll();
+			if (products.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			return new ResponseEntity<>(products, HttpStatus.OK);
+		}
+
+		else {
+			List<Product> products=productService.searchProduct(title);
+			if(products.isEmpty())
+			{
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+		return new ResponseEntity<>(products, HttpStatus.OK);
+		}
+	}
 	@GetMapping("/orderchoxacnhan/{type}")
 	public ResponseEntity<List<Order>> getAllOrderStatus(@PathVariable("type") int type)
 	{
 	
-		List<Order> orders=orderService.getAllOrderStatus("choxacnhan",type);
+		List<Order> orders=orderService.getAllOrderStatus("2",type);
+//		List<Order> orderss=new ArrayList<Order>()
+//		for (Order order : orders) {
+//			order
+//		}
 		if(orders.isEmpty())
 		{
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -95,10 +96,14 @@ public class Controller {
 		if(order.isPresent())
 		{
 			Order order1=order.get();
-			order1.setStatus(orderupdate.getStatus());
+			if(orderupdate.getStatus().contains("huy"))
+			{
+			order1.setStatus("3");
+			}
 			order1.setDescription(orderupdate.getDescription());
 			if(orderupdate.getStatus().contains("thanhcong"))
 			{
+				order1.setStatus("1");
 				//tim order detail
 				Optional<List<Order_Detail>> orderDetails=orderDetailService.getOrderDetailbyOrder(order1.getId());
 				if(orderDetails.isPresent())
@@ -110,21 +115,21 @@ public class Controller {
 						if(product.isPresent())
 						{		
 							Product productt=product.get();
-							if(orderupdate.getTrading_type().contains("import"))
+							if(order1.getTrading_type().contains("import"))
 							{
+								System.out.println("1111"+order1.getTrading_type()+ " "+ productt.getId());
 							productt.setAmount(orderdetail.getAmount()+productt.getAmount());
 							productService.insertOrUpdate(productt);
 							}
-							if(orderupdate.getTrading_type().contains("export"))
+							else
 							{
+							System.out.println("2222"+order1.getTrading_type()+ " "+ productt.getId());
 							productt.setAmount(productt.getAmount()-orderdetail.getAmount());
 							productService.insertOrUpdate(productt);
 							}
 						}
 					}
 				}
-				
-				// update sanpham
 			}
 			orderService.insertOrUpdate(order1);
 			return new ResponseEntity<Order>(order1, HttpStatus.OK);
@@ -136,9 +141,10 @@ public class Controller {
 	{
 		List<TableDetail> tableDetails=new ArrayList<TableDetail>();
 		Optional<Order> order=orderService.getorderbyId(id);
-		
-			Order order1=order.get();
-			Optional<User> user=(Optional<User>) userService.getUser(order1.getUser_id()).getBody();
+		if(order.isPresent())
+		{
+	    Order order1=order.get();
+		Optional<User> user=(Optional<User>) userService.getUser(order1.getUser_id()).getBody();
 		Optional<List<Order_Detail>> orderDetails=orderDetailService.getOrderDetailbyOrder(id);
 		if(orderDetails.isPresent())
 		{
@@ -148,22 +154,30 @@ public class Controller {
 				if(product.isPresent())
 				{
 					Product productt=product.get();
-					Category category=(Category) categoryService.getCategory(productt.getCategory_id()).getBody();
-					Provider provider= (Provider) proviService.getProvider(productt.getId()).getBody();
+					Category category= (Category) categoryService.getCategory(productt.getCategory_id()).getBody();
 					TableDetail tableDetail=new TableDetail();
+				
+					Optional<Provider> provider=  proviService.getproviderbyId(productt.getProvider_id());
+					if(provider.isPresent())
+					{
+					tableDetail.setNhacungcap(provider.get().getName());
+					}
 					tableDetail.setNamesanpham(productt.getName());
 					tableDetail.setGia(productt.getPrice());
 					tableDetail.setLoai(category.getName());
-					//System.out.print("dddddddddddd dddd "+provider.get().getName());
-					tableDetail.setNhacungcap(provider.getName());
+//					//System.out.print("dddddddddddd dddd "+provider.get().getName());
+//					tableDetail.setNhacungcap(provider.getName());
 					tableDetail.setSoluong(order_Detail.getAmount());
 					tableDetail.setGia(productt.getPrice());
+					if(user.isPresent())
 					tableDetail.setNameuser(user.get().getFull_name());
 					tableDetails.add(tableDetail);
 				}
 			}
 			return new ResponseEntity<List<TableDetail>>(tableDetails,HttpStatus.OK);
 		}
+		}
+		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 //	@GetMapping("/search")
@@ -186,7 +200,7 @@ public class Controller {
 //	}
 	@GetMapping("/search/{madonhang}/{nguoiphutrach}")
 	public ResponseEntity<List<Order>> searcHoadon(@PathVariable(required = false) int madonhang,
-			@PathVariable(required = false) int nguoiphutrach , @RequestParam(required = false) Date ngay,
+			@PathVariable(required = false) int nguoiphutrach , @RequestParam(required = false) String ngay,
 			@RequestParam(required = false) String loai ){
 		return new ResponseEntity<List<Order>>(orderService.search(madonhang, nguoiphutrach, ngay,loai), HttpStatus.OK);
 	}
@@ -195,4 +209,50 @@ public class Controller {
 	{
 		return userService.getAllUser();
 	}
+	@GetMapping("order/{id}")
+	public ResponseEntity<Order> get(@PathVariable(required = false) int id)
+	{
+		return new ResponseEntity<Order>(orderService.getorderbyId(id).get(), HttpStatus.OK);
+	}
+
+	
+	@GetMapping("thongkeloainhap/{thang}/{nam}")
+	public ResponseEntity<List<ThongKeLoai>> thongKeLoai(@PathVariable("thang") int thang, @PathVariable("nam") int nam)
+	{
+		long soluongban=0;
+		List<ThongKeLoai> thongkeloais=orderService.thongKeLoainhap(thang, nam);
+		List<ThongKeLoai> thongkeloaiss=new ArrayList<ThongKeLoai>();
+		for (ThongKeLoai thongKeLoai : thongkeloais) {
+			soluongban+=thongKeLoai.getTongsoluong();
+		}
+		System.out.println(soluongban);
+		for (ThongKeLoai thongKeLoai : thongkeloais) {
+			System.out.println((double)thongKeLoai.getTongsoluong()/soluongban);
+			Double phantram=((double)thongKeLoai.getTongsoluong()/soluongban);
+			
+			thongKeLoai.setPhantram(phantram*100);
+			thongkeloaiss.add(thongKeLoai);
+		}
+		return new ResponseEntity<List<ThongKeLoai>>(thongkeloaiss,HttpStatus.OK);
+	}
+	@GetMapping("thongkeloaixuat/{thang}/{nam}")
+	public ResponseEntity<List<ThongKeLoai>> thongKeLoaixuat(@PathVariable("thang") int thang, @PathVariable("nam") int nam)
+	{
+		long soluongban=0;
+		List<ThongKeLoai> thongkeloais=orderService.thongKeLoaixuat(thang, nam);
+		List<ThongKeLoai> thongkeloaiss=new ArrayList<ThongKeLoai>();
+		for (ThongKeLoai thongKeLoai : thongkeloais) {
+			soluongban+=thongKeLoai.getTongsoluong();
+		}
+		System.out.println(soluongban);
+		for (ThongKeLoai thongKeLoai : thongkeloais) {
+			System.out.println((double)thongKeLoai.getTongsoluong()/soluongban);
+			Double phantram=((double)thongKeLoai.getTongsoluong()/soluongban);
+			
+			thongKeLoai.setPhantram(phantram*100);
+			thongkeloaiss.add(thongKeLoai);
+		}
+		return new ResponseEntity<List<ThongKeLoai>>(thongkeloaiss,HttpStatus.OK);
+	}
 }
+

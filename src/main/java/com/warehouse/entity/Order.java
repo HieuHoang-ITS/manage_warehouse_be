@@ -14,13 +14,46 @@ public class Order {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-	int user_id;
-	String trading_type;
-	String customer_name;
-	String customer_phone;
-	String status;
-	String description;
-	int total_price;
+	private int user_id;
+	private String trading_type;
+	private String customer_name;
+	private String customer_phone;
+	private String status;
+	private String description;
+	private int total_price;
+	private boolean delete_flag; 
+	private Date created_at;
+
+	public Order() {
+		super();
+	}
+	public Order( int user_id, String trading_type, String customer_name, String customer_phone, String status,
+			String description, int total_price, Date created_at) {
+		super();
+		this.user_id = user_id;
+		this.trading_type = trading_type;
+		this.customer_name = customer_name;
+		this.customer_phone = customer_phone;
+		this.status = status;
+		this.description = description;
+		this.total_price = total_price;
+		this.created_at = created_at;
+	}
+	
+	public Order(int id, int user_id, String trading_type, String customer_name, String customer_phone, String status,
+			String description, int total_price, boolean delete_flag, Date created_at) {
+		super();
+		this.id = id;
+		this.user_id = user_id;
+		this.trading_type = trading_type;
+		this.customer_name = customer_name;
+		this.customer_phone = customer_phone;
+		this.status = status;
+		this.description = description;
+		this.total_price = total_price;
+		this.delete_flag = delete_flag;
+		this.created_at = created_at;
+	}
 	public int getId() {
 		return id;
 	}
@@ -69,11 +102,18 @@ public class Order {
 	public void setTotal_price(int total_price) {
 		this.total_price = total_price;
 	}
+	
+	public boolean isDelete_flag() {
+		return delete_flag;
+	}
+	public void setDelete_flag(boolean delete_flag) {
+		this.delete_flag = delete_flag;
+	}
 	public Date getCreated_at() {
 		return created_at;
 	}
 	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
 	}
-	Date created_at;
+	
 }

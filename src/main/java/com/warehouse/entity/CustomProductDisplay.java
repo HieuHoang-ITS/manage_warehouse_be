@@ -2,6 +2,7 @@ package com.warehouse.entity;
 
 public class CustomProductDisplay {
 	private int id;
+	private int provider_id;
 	private String product_name;
 	private String category_name;
 	private String provider_name;
@@ -12,10 +13,11 @@ public class CustomProductDisplay {
 	private int price;
 	
 	
-	public CustomProductDisplay(int id, String product_name, String category_name, String provider_name, String provider_address,
-			int amount, String unit, String category_status, int price) {
+	public CustomProductDisplay(int id, int provider_id, String product_name, String category_name,
+			String provider_name, String provider_address, int amount, String unit, String category_status, int price) {
 		super();
 		this.id = id;
+		this.provider_id = provider_id;
 		this.product_name = product_name;
 		this.category_name = category_name;
 		this.provider_name = provider_name;
@@ -30,6 +32,13 @@ public class CustomProductDisplay {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int getProvider_id() {
+		return provider_id;
+	}
+	public void setProvider_id(int provider_id) {
+		this.provider_id = provider_id;
 	}
 	public String getProduct_name() {
 		return product_name;
