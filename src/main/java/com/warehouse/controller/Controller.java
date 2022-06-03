@@ -1,5 +1,6 @@
 package com.warehouse.controller;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -212,8 +213,7 @@ public class Controller {
 	public ResponseEntity<Order> get(@PathVariable(required = false) int id)
 	{
 		return new ResponseEntity<Order>(orderService.getorderbyId(id).get(), HttpStatus.OK);
-	}
-
+	}	
 	@GetMapping("thongkeloainhap/{thang}/{nam}")
 	public ResponseEntity<List<ThongKeLoai>> thongKeLoai(@PathVariable("thang") int thang, @PathVariable("nam") int nam)
 	{
@@ -253,3 +253,4 @@ public class Controller {
 		return new ResponseEntity<List<ThongKeLoai>>(thongkeloaiss,HttpStatus.OK);
 	}
 }
+

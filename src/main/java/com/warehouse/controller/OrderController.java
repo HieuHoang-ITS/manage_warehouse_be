@@ -1,14 +1,19 @@
 package com.warehouse.controller;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +23,7 @@ import com.warehouse.entity.CustomOrder;
 import com.warehouse.entity.CustomProductDisplay;
 import com.warehouse.entity.DetailOrder_Display;
 import com.warehouse.entity.NewOrder;
+import com.warehouse.entity.NewOrderSearch;
 import com.warehouse.entity.Order;
 import com.warehouse.entity.Order_Detail;
 import com.warehouse.entity.Product;
@@ -30,32 +36,60 @@ import com.warehouse.service.ProductService;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-	@Autowired OrderService orderService;
-	@Autowired OrderDetailService orderDetailService;
-	
+	@Autowired
+	OrderService orderService;
+	@Autowired
+	OrderDetailService orderDetailService;
+
 	@GetMapping("/export")
-	public ResponseEntity<List<CustomOrder>> getAllExportOrders(){
+	public ResponseEntity<List<CustomOrder>> getAllExportOrders() {
 		return orderService.findIEOrders("export");
 	}
+
 	@GetMapping("/import")
-	public ResponseEntity<List<CustomOrder>> getAllImportOrders(){
+	public ResponseEntity<List<CustomOrder>> getAllImportOrders() {
 		return orderService.findIEOrders("import");
 	}
-	@GetMapping("/register/product")
-	public ResponseEntity<List<CustomProductDisplay>> getProduct(){
-		return orderService.findAllProduct();
+
+	@GetMapping("/record")
+	public ResponseEntity<List<CustomOrder>> getAllRecordOrders() {
+		return orderService.findAllProcessedOrders();
 	}
+
+	@GetMapping("/search")
+	public ResponseEntity<List<CustomOrder>> getSearchByFilter(
+			@RequestParam(required = false) String id, 
+			@RequestParam(required = false) String uid, 
+			@RequestParam(required = false) String status, 
+			@RequestParam(required = false) String date,
+			@RequestParam String type) throws ParseException
+	{
+		NewOrderSearch filter = new NewOrderSearch(id, uid, status, date);
+		return orderService.searchByFilter(filter, type);
+	}
+
+	@GetMapping("/register/product")
+	public ResponseEntity<List<CustomProductDisplay>> getProduct(@RequestParam String type) {
+		return orderService.findAllProduct(type);
+	}
+
 	@GetMapping("/register/user")
-	public ResponseEntity<List<User>> getUser(){
+	public ResponseEntity<List<User>> getUser() {
 		return orderService.findAllUser();
 	}
+
 	@PostMapping("/register/save")
-	public ResponseEntity addNewOrder(@RequestBody NewOrder newOrder ) {
+	public ResponseEntity addNewOrder(@RequestBody NewOrder newOrder) {
 		return orderService.add(newOrder);
 	}
-	
+
+	@PutMapping("/change-delete-flag")
+	public ResponseEntity updateDeleteFlag(@RequestBody int[] deleteIDs) {
+		return orderService.deleteFlag(deleteIDs);
+	}
+
 	@GetMapping("/detail/{order_id}")
-	public ResponseEntity<List<DetailOrder_Display>> getDetailOrder(@PathVariable int order_id){
+	public ResponseEntity<List<DetailOrder_Display>> getDetailOrder(@PathVariable int order_id) {
 		System.out.println(order_id);
 		return orderDetailService.findOrderDetails(order_id);
 	}

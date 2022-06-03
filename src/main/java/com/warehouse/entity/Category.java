@@ -32,4 +32,8 @@ public class Category {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	@Override
+	public String toString() {
+		return "Category [id=" + id + ", name=" + name + ", status=" + status + "]";
+	}
 }
