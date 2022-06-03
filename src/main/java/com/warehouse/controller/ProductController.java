@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.warehouse.entity.Category;
 import com.warehouse.entity.Product;
 import com.warehouse.service.ProductService;
-
 @RestController
 @RequestMapping(path="api/v1/Products")
 @CrossOrigin(origins = "http://localhost:4200")
