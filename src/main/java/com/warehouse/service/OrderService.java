@@ -59,16 +59,9 @@ public class OrderService {
 	 public List<Order> search(int madonhang, int nguoiphutrach, String ngay,String loai)
 	 {
 		 try {
-			//Date sellDate = new SimpleDateFormat("yyyy-MM-dd").parse("1/1/19");
-//			if(loai.contains(""))
-//			{
-//				String d=null;
-//			 return orderRepository.search(madonhang,nguoiphutrach,d,ngay);
-//			 return orderRepository.search(madonhang,nguoiphutrach,loai,ngay);
-//			}
 			 System.out.println(ngay);
 			Date sellDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngay);
-			Date sellDa = new SimpleDateFormat("yyyy-MM-dd").parse("2000-10-10");
+			Date sellDa = new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
 			System.out.println(sellDa);
 //			System.out.println(ngay);
 			return orderRepository.search(madonhang,nguoiphutrach,loai,sellDate,sellDa);
@@ -78,14 +71,11 @@ public class OrderService {
 		}
 		 return orderRepository.findAll();
 	 }
-
-
 	public ResponseEntity<List<CustomOrder>> findIEOrders(String type) {
 		List<CustomOrder> orders;
 		orders = orderRepository.findIEOrders(type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
-
 	public ResponseEntity add(NewOrder newOrder) {
 		// Insert to trading_invoice
 		Order order = newOrder.getOrder();
