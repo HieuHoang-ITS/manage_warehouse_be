@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.warehouse.entity.Provider;
+import com.warehouse.entity.User;
 import com.warehouse.service.ProviderService;
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(path = "api/v1/Providers")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProviderController {
 	@Autowired
 	private ProviderService providerService;
@@ -39,18 +41,23 @@ public class ProviderController {
 	}
 
 	@PostMapping("/insert")
-	public ResponseEntity insertCategory(@RequestBody Provider newProvider) {
+	public ResponseEntity insertProvider(@RequestBody Provider newProvider) {
 		return providerService.insert(newProvider);
 
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity updateCategory(@RequestBody Provider pvd, @PathVariable int id) {
-		return providerService.update(pvd, id);
+		Provider provider= (Provider) providerService.getProvider(id).getBody();
+		provider.setName(pvd.getName());
+		provider.setAddress(pvd.getAddress());
+		provider.setStatus(pvd.getStatus());
+		provider.setTel(pvd.getTel());
+		return providerService.update(provider);
 
 	}
 
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> Deletecategory(@PathVariable int id) {
 		return providerService.Delele(id);
 
@@ -59,5 +66,12 @@ public class ProviderController {
 	@GetMapping("/by/{id}")
 	public Provider findid(@PathVariable int id) {
 		return providerService.getproviderbyId(id).get();
+	}
+	@GetMapping("/search")
+	public ResponseEntity<List<Provider>>searchProvider(@RequestParam(required = false) String address,@RequestParam(required = false) String tel )
+	{
+		
+		return providerService.search(address, tel);
+		
 	}
 }

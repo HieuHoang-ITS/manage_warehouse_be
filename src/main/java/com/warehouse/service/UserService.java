@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
 
 import com.warehouse.entity.User;
 import com.warehouse.repository.UserRepository;
@@ -59,6 +60,32 @@ public class UserService {
 		}
 		return new ResponseEntity<String>("NOT_FOUND",HttpStatus.NOT_FOUND);
 	}
-	
+	public boolean checkString(String str) {
+		if (str == null || str.length() < 0)
+			return false;
+		else if ("".equals(str.trim()))
+			return false;
+		else
+			return true;
+	}
+	public ResponseEntity<List<User>>search(String full_name,String email,String tel){
+		List<User> users;
+		
+		String name=null;
+		String mail=null;
+		String telephone=null;
+		if(checkString(full_name)) {
+			name=full_name;
+		}
+		if(checkString(email)) {
+			mail=email;
+		}
+		if(checkString(tel)) {
+			telephone=tel;
+		}
+		users = ur.search(name,mail,telephone);
+		return ResponseEntity.status(HttpStatus.OK).body(users);
+				
+	}
 	
 }
