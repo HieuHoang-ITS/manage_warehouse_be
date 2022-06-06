@@ -136,10 +136,4 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 			+ " WHERE extract(month from o.created_at) = ?1 AND extract(year from o.created_at) = ?2 and o.trading_type='export'"
 			+ " group by c.name")
 	List<ThongKeLoai> Thongkeloaixuat(int thang, int nam);
-	
-	@Query("select new com.warehouse.entity.Thongke (EXTRACT(MONTH FROM created_at) as th,sum(f.amount*p.price))"
-			+ " from Order t " + "join Order_Detail f"
-			+ "	on t.id=f.order_id join Product p on f.product_id=p.id where t.trading_type like 'import'"
-			+ "	and (t.created_at>=?1 and t.created_at<?2)  group by EXTRACT(MONTH FROM created_at) order by th asc")
-	List<Thongke> thongkeTheoKhoang(Date from, Date to);
 }
