@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import com.warehouse.entity.CustomProductDisplay;
 import com.warehouse.entity.Product;
 import com.warehouse.entity.User;
@@ -25,10 +24,9 @@ public class ProductService {
 	{
 		return productRepository.findAll();
 	}
-
-	public ResponseEntity<List> getAllProduct() {
+	public ResponseEntity<List<CustomProductDisplay>> getAllProduct() {
 		// TODO Auto-generated method stub
-		List<Product> cas=pdr.dm();
+		List<CustomProductDisplay> cas=pdr.findAllProduct();
 		return ResponseEntity.status(HttpStatus.OK).body(cas);
 }
 	public ResponseEntity insert(Product product){
