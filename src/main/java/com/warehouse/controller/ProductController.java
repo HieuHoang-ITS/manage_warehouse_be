@@ -34,7 +34,7 @@ public class ProductController {
 		this.productService = productService;
 	}
 	@GetMapping("")
-	public ResponseEntity<List> getAll(){
+	public ResponseEntity<List<CustomProductDisplay>> getAll(){
 		return productService.getAllProduct();
 		
 	}

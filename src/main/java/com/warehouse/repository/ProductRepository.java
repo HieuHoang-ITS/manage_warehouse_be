@@ -21,6 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer>{
 				+ ")" + "FROM Product as pr, Category as ca, Provider as pro "
 				+ "WHERE pr.category_id = ca.id and pr.provider_id = pro.id")
 		List<CustomProductDisplay> findAllProduct();
+	 
 	 @Query("SELECT new com.warehouse.entity.CustomProductDisplay("
 				+ "pr.id, pro.id as provider_id, pr.name as product_name, ca.name as category_name, pro.name as provider_name, pro.address, pr.amount, pr.unit, ca.status, pr.price"
 				+ ")" + "FROM Product as pr, Category as ca, Provider as pro "
