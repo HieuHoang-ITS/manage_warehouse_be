@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.warehouse.entity.Category;
 import com.warehouse.entity.Provider;
+import com.warehouse.entity.User;
 import com.warehouse.repository.ProviderRepository;
 
 @Service
@@ -20,7 +23,7 @@ public class ProviderService {
 	}
 	public ResponseEntity<List> getAllProvider() {
 		// TODO Auto-generated method stub
-		
+//		List<Provider> cas=pr.dm();
 		return ResponseEntity.status(HttpStatus.OK).body(pr.findAll());
 		
 		
@@ -29,19 +32,9 @@ public class ProviderService {
 		pr.save(provider);
 	return ResponseEntity.status(HttpStatus.OK).body("Inser category successfully");
 }
-	public ResponseEntity update(Provider pvd, int id) {
+	public ResponseEntity update(Provider pvd) {
 		// TODO Auto-generated method stub
-		Provider newPv = pr.findById(id).map(provider -> {
-			provider.setName(pvd.getName());
-//			provider.setStatus(pvd.getStatus());
-//			provider.setAddress(pvd.getStatus());
-			provider.setTel(pvd.getTel());
-			return pr.save(provider);
-		}).orElseGet(() -> {
-			pvd.setId(id);
-			return pr.save(pvd);
-
-		});
+		pr.save(pvd);
 		return ResponseEntity.status(HttpStatus.OK).body("update successfully");	
 		}
 	
@@ -62,5 +55,28 @@ public class ProviderService {
 	public Optional<Provider> getproviderbyId(int id)
 	{
 		return pr.findById(id);
+	}
+	public boolean checkString(String str) {
+		if (str == null || str.length() < 0)
+			return false;
+		else if ("".equals(str.trim()))
+			return false;
+		else
+			return true;
+	}
+	public ResponseEntity<List<Provider>>search(String address,String tel){
+		List<Provider> provi;
+		String name=null;
+		String telephone=null;
+		if(checkString(address)) {
+			name=address;
+		}
+		if(checkString(tel)) {
+			telephone=tel;
+		}
+		System.out.println("["+name+" - "+telephone+"]");
+		provi = pr.search(name,telephone);
+		return ResponseEntity.status(HttpStatus.OK).body(provi);
+				
 	}
 }
