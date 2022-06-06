@@ -10,7 +10,8 @@ import com.warehouse.entity.CustomProductDisplay;
 import com.warehouse.entity.Product;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer>{
+public interface ProductRepository extends JpaRepository<Product, Integer> {
+
 	@Query("select e from Product e where e.name like ?1")
 	List<Product> searchProduct(String search);
 	 @Query("SELECT e FROM Product e ORDER BY e.id asc")
