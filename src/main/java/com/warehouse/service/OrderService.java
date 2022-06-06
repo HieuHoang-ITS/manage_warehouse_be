@@ -1,5 +1,15 @@
 package com.warehouse.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.warehouse.entity.Order;
+import com.warehouse.entity.ThongKeSanPhamTheoThang;
+import com.warehouse.entity.Thongke;
+import com.warehouse.repository.OrderRepository;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.warehouse.entity.Order;
 import com.warehouse.entity.Order_Detail;
+import com.warehouse.entity.ThongKeBaSanPhamDuocNhapNhieuNhat;
 import com.warehouse.entity.ThongKeLoai;
 
 import java.util.List;
@@ -41,6 +52,33 @@ public class OrderService {
 	@Autowired
 	OrderDetailRepository orderDetailRepository;
 
+	public List<Thongke> th11() {
+		return orderRepository.thongKeTheoThang();
+	}
+
+	public List<Thongke> thongkeTheoKhoang(String fromDate, String toDate) {
+		Date from = new Date();
+		Date to = new Date();
+		
+		try {
+			from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
+			to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
+		} catch (Exception e) {
+		}
+		System.out.println("===== Date Check ====");
+		System.out.println(from);
+		System.out.println(to);
+		return orderRepository.thongkeTheoKhoang(from, to);
+	}
+
+	public List<ThongKeSanPhamTheoThang> thongKeSanPhamTheoThang(int thang, int nam) {
+		return orderRepository.thongkesanphamtheothang(thang, nam);
+	}
+
+	public List<ThongKeSanPhamTheoThang> thongKeSanPhamTheoThangnhap(int thang, int nam) {
+		return orderRepository.thongkesanphamtheothangnhap(thang, nam);
+	}
+
 	public List<Order> getAllOrderStatus(String status, int type) {
 		if (type == 1) {
 			return orderRepository.getALLOrderStatus(status, "import");
@@ -60,11 +98,11 @@ public class OrderService {
 
 	// @GetMapping("search/{madonhang}/{loai}/{ngaynhap}/{ngayxuat}/{nguoiphutrach}")
 
-	// int madonhang, String loai, Date ngaynhap, Date ngayxuat, String nguoiphutrach
-	 public List<Order> search(int madonhang, int nguoiphutrach, String ngay,String loai)
-	 {
-		 try {
-			 System.out.println(ngay);
+	// int madonhang, String loai, Date ngaynhap, Date ngayxuat, String
+	// nguoiphutrach
+	public List<Order> search(int madonhang, int nguoiphutrach, String ngay, String loai) {
+		try {
+			System.out.println(ngay);
 			Date sellDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngay);
 			Date sellDa = new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
 			System.out.println(sellDa);
@@ -75,16 +113,14 @@ public class OrderService {
 			e.printStackTrace();
 		}
 
-		 return orderRepository.findAll();
-	 }
-
+		return orderRepository.findAll();
+	}
 
 	public ResponseEntity<List<CustomOrder>> findIEOrders(String type) {
 		List<CustomOrder> orders;
 		orders = orderRepository.findIEOrders(type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
-
 
 	public ResponseEntity<List<CustomOrder>> findAllProcessedOrders() {
 		List<CustomOrder> orders;
@@ -106,7 +142,7 @@ public class OrderService {
 		int id = 0;
 		int uid = 0;
 		String status = null;
-		Date date =  new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
 		Date nullDate = date;
 		Date dayAfter = date;
 		if (checkString(filter.getId()))
@@ -117,15 +153,15 @@ public class OrderService {
 			status = filter.getStatus();
 		if (checkString(filter.getDate()))
 			try {
-				Calendar c = Calendar.getInstance(); 
+				Calendar c = Calendar.getInstance();
 				date = new SimpleDateFormat("yyyy-MM-dd").parse(filter.getDate());
-				c.setTime(date); 
+				c.setTime(date);
 				// get the day after
 				c.add(Calendar.DATE, 1);
 				dayAfter = c.getTime();
-				} 
-			catch (Exception e){}
-		System.out.println("["+id+" - "+uid+" - "+status+" - "+date+" - "+type+"]");
+			} catch (Exception e) {
+			}
+		System.out.println("[" + id + " - " + uid + " - " + status + " - " + date + " - " + type + "]");
 		orders = orderRepository.searchByFilter(id, uid, status, date, nullDate, dayAfter, type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
@@ -151,10 +187,9 @@ public class OrderService {
 	public ResponseEntity<List<CustomProductDisplay>> findAllProduct(String type) {
 		List<CustomProductDisplay> products;
 		if (type.equalsIgnoreCase("import")) {
-			products = orderRepository.productImportDisplay();			
-		}
-		else {
-			products = orderRepository.productExportDisplay();	
+			products = orderRepository.productImportDisplay();
+		} else {
+			products = orderRepository.productExportDisplay();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(products);
 	}
@@ -163,12 +198,12 @@ public class OrderService {
 		List<User> users = orderRepository.findAllUser();
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
-	public List<ThongKeLoai> thongKeLoainhap(int thang, int nam)
-	{
+
+	public List<ThongKeLoai> thongKeLoainhap(int thang, int nam) {
 		return orderRepository.Thongkeloainhap(thang, nam);
 	}
-	public List<ThongKeLoai> thongKeLoaixuat(int thang, int nam)
-	{
+
+	public List<ThongKeLoai> thongKeLoaixuat(int thang, int nam) {
 		return orderRepository.Thongkeloaixuat(thang, nam);
 	}
 
@@ -177,6 +212,16 @@ public class OrderService {
 			orderRepository.deleteFlags(i);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Deleted ID=[" + deleteIDs + "]");
+	}
+
+	public List<ThongKeBaSanPhamDuocNhapNhieuNhat> thongKe3sanphamnhapnhieunhat(int thang, int nam) {
+		List<ThongKeBaSanPhamDuocNhapNhieuNhat> products;
+		List<ThongKeBaSanPhamDuocNhapNhieuNhat> subProducts;
+
+		products = orderRepository.thongke3sanphamnhapnhieunhat(thang, nam);
+		subProducts = products.subList(0, 3);
+
+		return subProducts;
 	}
 
 }
