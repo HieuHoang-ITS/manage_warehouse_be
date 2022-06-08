@@ -27,6 +27,7 @@ public class ProductService {
 	public ResponseEntity<List<CustomProductDisplay>> getAllProduct() {
 		// TODO Auto-generated method stub
 		List<CustomProductDisplay> cas=pdr.findAllProduct();
+		
 		return ResponseEntity.status(HttpStatus.OK).body(cas);
 }
 	public ResponseEntity insert(Product product){

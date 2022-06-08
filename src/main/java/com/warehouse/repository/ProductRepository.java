@@ -28,10 +28,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 				+ ")" + "FROM Product as pr, Category as ca, Provider as pro "
 				+ "WHERE pr.category_id = ca.id and pr.provider_id = pro.id "
 				+ "and "
-				+ "(pr.name like CONCAT('%',?1,'%')OR (?1=null)) "
+				+ "(lower(pr.name) like lower(CONCAT('%',?1,'%'))OR (?1=null)) "
 				+ "and "
-				+ "(ca.name like CONCAT('%',?2,'%')OR (?2=null))"
+				+ "(lower(ca.name) like lower(CONCAT('%',?2,'%'))OR (?2=null))"
 				+ "and"
-				+ "( pro.name like CONCAT('%',?3,'%')OR (?3=null))")
+				+ "(lower(pro.name) like lower(CONCAT('%',?3,'%'))OR (?3=null))")
 	 List<CustomProductDisplay>search(String product_name,String category_name,String provider_name);
 }
