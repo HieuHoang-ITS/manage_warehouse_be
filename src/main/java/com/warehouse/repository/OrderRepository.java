@@ -3,6 +3,7 @@ package com.warehouse.repository;
 import java.util.Date;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -88,10 +89,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 			+ " FROM Order as o JOIN User as us ON o.user_id = us.id" + " WHERE"
 			+ " ((:type like 'record') or o.delete_flag=false)" + " and ((:id in (0)) or o.id=:id)"
 			+ " and ((:user_id in (0)) or us.id=:user_id)" + " and ((:status is null) or o.status = :status)"
-			+ " and (:date in (:nullDate) or (o.created_at >= :date and o.created_at<:da))"
+			+ " and ((:fromDate in (:nullDate) and :toDate in (:nullDate)) or (o.created_at >= :fromDate and o.created_at<=:toDate))"
 			+ " and ((:type like 'record') or o.trading_type=:type)")
 	List<CustomOrder> searchByFilter(int id, @Param("user_id") int uid, @Param("status") String status,
-			@Param("date") Date date, @Param("nullDate") Date nullDate, @Param("da") Date dayAfter,
+			@Param("nullDate") Date nullDate, @Param("fromDate") Date fromDate, @Param("toDate") Date toDate,
 			@Param("type") String type);
 
 	@Query(value = "SELECT new com.warehouse.entity.CustomProductDisplay("
@@ -136,7 +137,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 			+ " WHERE extract(month from o.created_at) = ?1 AND extract(year from o.created_at) = ?2 and o.trading_type='export'"
 			+ " group by c.name")
 	List<ThongKeLoai> Thongkeloaixuat(int thang, int nam);
-	
+
 	@Query("select new com.warehouse.entity.Thongke (EXTRACT(MONTH FROM created_at) as th,sum(f.amount*p.price))"
 			+ " from Order t " + "join Order_Detail f"
 			+ "	on t.id=f.order_id join Product p on f.product_id=p.id where t.trading_type like 'import'"

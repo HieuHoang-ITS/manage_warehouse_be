@@ -6,18 +6,20 @@ public class NewOrderSearch {
 	private String id;
 	private String uid;
 	private String status;
-	private String date;
-
+	private String toDate;
+	private String fromDate;
+	
 	public NewOrderSearch() {
 		super();
 	}
 
-	public NewOrderSearch(String id, String uid, String status, String date) {
+	public NewOrderSearch(String id, String uid, String status, String toDate, String fromDate) {
 		super();
 		this.id = id;
 		this.uid = uid;
 		this.status = status;
-		this.date = date;
+		this.toDate = toDate;
+		this.fromDate = fromDate;
 	}
 
 	public String getId() {
@@ -44,17 +46,26 @@ public class NewOrderSearch {
 		this.status = status;
 	}
 
-	public String getDate() {
-		return date;
+	public String getToDate() {
+		return toDate;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
 	}
 
 	@Override
 	public String toString() {
-		return "NewOrderSearch [id=" + id + ", uid=" + uid + ", status=" + status + ", date=" + date + "]";
+		return "NewOrderSearch [id=" + id + ", uid=" + uid + ", status=" + status + ", toDate=" + toDate + ", fromDate="
+				+ fromDate + "]";
 	}
-	
+
 }
