@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "trading_invoice")
@@ -16,7 +17,9 @@ public class Order {
     private int id;
 	private int user_id;
 	private String trading_type;
+	@NotEmpty(message="Customer Name is required")
 	private String customer_name;
+	@NotEmpty(message="Customer Phone is required")
 	private String customer_phone;
 	private String status;
 	private String description;

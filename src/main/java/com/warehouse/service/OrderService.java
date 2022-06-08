@@ -59,7 +59,7 @@ public class OrderService {
 	public List<Thongke> thongkeTheoKhoang(String fromDate, String toDate) {
 		Date from = new Date();
 		Date to = new Date();
-		
+
 		try {
 			from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
 			to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
@@ -142,27 +142,30 @@ public class OrderService {
 		int id = 0;
 		int uid = 0;
 		String status = null;
-		Date date = new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
-		Date nullDate = date;
-		Date dayAfter = date;
+		Date nullDate = new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
+		Date fromDate = nullDate;
+		Date toDate = nullDate;
+
 		if (checkString(filter.getId()))
 			id = Integer.parseInt(filter.getId());
 		if (checkString(filter.getUid()))
 			uid = Integer.parseInt(filter.getUid());
 		if (checkString(filter.getStatus()))
 			status = filter.getStatus();
-		if (checkString(filter.getDate()))
+		if (checkString(filter.getFromDate()))
 			try {
-				Calendar c = Calendar.getInstance();
-				date = new SimpleDateFormat("yyyy-MM-dd").parse(filter.getDate());
-				c.setTime(date);
+				fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(filter.getFromDate());
+				toDate = new SimpleDateFormat("yyyy-MM-dd").parse(filter.getToDate());
 				// get the day after
+				Calendar c = Calendar.getInstance();
+				c.setTime(toDate);
 				c.add(Calendar.DATE, 1);
-				dayAfter = c.getTime();
+				toDate = c.getTime();
 			} catch (Exception e) {
 			}
-		System.out.println("[" + id + " - " + uid + " - " + status + " - " + date + " - " + type + "]");
-		orders = orderRepository.searchByFilter(id, uid, status, date, nullDate, dayAfter, type);
+		System.out.println(
+				"[" + id + " - " + uid + " - " + status + " - " + fromDate + " - " + toDate + " - " + type + "]");
+		orders = orderRepository.searchByFilter(id, uid, status, nullDate, fromDate, toDate, type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
 
