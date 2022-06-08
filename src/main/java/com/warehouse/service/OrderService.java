@@ -1,6 +1,5 @@
 package com.warehouse.service;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import com.warehouse.entity.Order;
 import com.warehouse.entity.ThongKeSanPhamTheoThang;
 import com.warehouse.entity.Thongke;
 import com.warehouse.repository.OrderRepository;
-
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,14 +52,30 @@ public class OrderService {
 	@Autowired
 	OrderDetailRepository orderDetailRepository;
 
-	public List<Thongke> th11()
-	{
+	public List<Thongke> th11() {
 		return orderRepository.thongKeTheoThang();
 	}
-	public List<ThongKeSanPhamTheoThang> thongKeSanPhamTheoThang(int thang, int nam){
+
+	public List<Thongke> thongkeTheoKhoang(String fromDate, String toDate) {
+		Date from = new Date();
+		Date to = new Date();
+
+		try {
+			from = new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
+			to = new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
+		} catch (Exception e) {
+		}
+		System.out.println("===== Date Check ====");
+		System.out.println(from);
+		System.out.println(to);
+		return orderRepository.thongkeTheoKhoang(from, to);
+	}
+
+	public List<ThongKeSanPhamTheoThang> thongKeSanPhamTheoThang(int thang, int nam) {
 		return orderRepository.thongkesanphamtheothang(thang, nam);
 	}
-	public List<ThongKeSanPhamTheoThang> thongKeSanPhamTheoThangnhap(int thang, int nam){
+
+	public List<ThongKeSanPhamTheoThang> thongKeSanPhamTheoThangnhap(int thang, int nam) {
 		return orderRepository.thongkesanphamtheothangnhap(thang, nam);
 	}
 
@@ -84,11 +98,11 @@ public class OrderService {
 
 	// @GetMapping("search/{madonhang}/{loai}/{ngaynhap}/{ngayxuat}/{nguoiphutrach}")
 
-	// int madonhang, String loai, Date ngaynhap, Date ngayxuat, String nguoiphutrach
-	 public List<Order> search(int madonhang, int nguoiphutrach, String ngay,String loai)
-	 {
-		 try {
-			 System.out.println(ngay);
+	// int madonhang, String loai, Date ngaynhap, Date ngayxuat, String
+	// nguoiphutrach
+	public List<Order> search(int madonhang, int nguoiphutrach, String ngay, String loai) {
+		try {
+			System.out.println(ngay);
 			Date sellDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngay);
 			Date sellDa = new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
 			System.out.println(sellDa);
@@ -99,16 +113,14 @@ public class OrderService {
 			e.printStackTrace();
 		}
 
-		 return orderRepository.findAll();
-	 }
-
+		return orderRepository.findAll();
+	}
 
 	public ResponseEntity<List<CustomOrder>> findIEOrders(String type) {
 		List<CustomOrder> orders;
 		orders = orderRepository.findIEOrders(type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
-
 
 	public ResponseEntity<List<CustomOrder>> findAllProcessedOrders() {
 		List<CustomOrder> orders;
@@ -130,27 +142,30 @@ public class OrderService {
 		int id = 0;
 		int uid = 0;
 		String status = null;
-		Date date =  new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
-		Date nullDate = date;
-		Date dayAfter = date;
+		Date nullDate = new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
+		Date fromDate = nullDate;
+		Date toDate = nullDate;
+
 		if (checkString(filter.getId()))
 			id = Integer.parseInt(filter.getId());
 		if (checkString(filter.getUid()))
 			uid = Integer.parseInt(filter.getUid());
 		if (checkString(filter.getStatus()))
 			status = filter.getStatus();
-		if (checkString(filter.getDate()))
+		if (checkString(filter.getFromDate()))
 			try {
-				Calendar c = Calendar.getInstance(); 
-				date = new SimpleDateFormat("yyyy-MM-dd").parse(filter.getDate());
-				c.setTime(date); 
+				fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(filter.getFromDate());
+				toDate = new SimpleDateFormat("yyyy-MM-dd").parse(filter.getToDate());
 				// get the day after
-				c.add(Calendar.DATE, 1);
-				dayAfter = c.getTime();
-				} 
-			catch (Exception e){}
-		System.out.println("["+id+" - "+uid+" - "+status+" - "+date+" - "+type+"]");
-		orders = orderRepository.searchByFilter(id, uid, status, date, nullDate, dayAfter, type);
+				Calendar c = Calendar.getInstance();
+				c.setTime(toDate);
+//				c.add(Calendar.DATE, 1);
+				toDate = c.getTime();
+			} catch (Exception e) {
+			}
+		System.out.println(
+				"[" + id + " - " + uid + " - " + status + " - " + fromDate + " - " + toDate + " - " + type + "]");
+		orders = orderRepository.searchByFilter(id, uid, status, nullDate, fromDate, toDate, type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
 
@@ -175,10 +190,9 @@ public class OrderService {
 	public ResponseEntity<List<CustomProductDisplay>> findAllProduct(String type) {
 		List<CustomProductDisplay> products;
 		if (type.equalsIgnoreCase("import")) {
-			products = orderRepository.productImportDisplay();			
-		}
-		else {
-			products = orderRepository.productExportDisplay();	
+			products = orderRepository.productImportDisplay();
+		} else {
+			products = orderRepository.productExportDisplay();
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(products);
 	}
@@ -187,28 +201,30 @@ public class OrderService {
 		List<User> users = orderRepository.findAllUser();
 		return ResponseEntity.status(HttpStatus.OK).body(users);
 	}
-	public List<ThongKeLoai> thongKeLoainhap(int thang, int nam)
-	{
+
+	public List<ThongKeLoai> thongKeLoainhap(int thang, int nam) {
 		return orderRepository.Thongkeloainhap(thang, nam);
 	}
-	public List<ThongKeLoai> thongKeLoaixuat(int thang, int nam)
-	{
+
+	public List<ThongKeLoai> thongKeLoaixuat(int thang, int nam) {
 		return orderRepository.Thongkeloaixuat(thang, nam);
 	}
+
 	public ResponseEntity deleteFlag(int[] deleteIDs) {
 		for (int i : deleteIDs) {
 			orderRepository.deleteFlags(i);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Deleted ID=[" + deleteIDs + "]");
 	}
-	public List<ThongKeBaSanPhamDuocNhapNhieuNhat> thongKe3sanphamnhapnhieunhat(int thang, int nam){
+
+	public List<ThongKeBaSanPhamDuocNhapNhieuNhat> thongKe3sanphamnhapnhieunhat(int thang, int nam) {
 		List<ThongKeBaSanPhamDuocNhapNhieuNhat> products;
 		List<ThongKeBaSanPhamDuocNhapNhieuNhat> subProducts;
 
-		products =  orderRepository.thongke3sanphamnhapnhieunhat( thang,  nam);
+		products = orderRepository.thongke3sanphamnhapnhieunhat(thang, nam);
 		subProducts = products.subList(0, 3);
-		
+
 		return subProducts;
 	}
-	
-}	
+
+}
