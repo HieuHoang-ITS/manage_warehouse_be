@@ -14,8 +14,8 @@ import com.warehouse.entity.User;
 public interface ProviderRepository extends JpaRepository<Provider, Integer> {
 //	 @Query("SELECT e FROM Provider e ORDER BY e.id asc")
 //	  List<Provider> dm();
-	 @Query("select p from Provider as p WHERE (p.address like CONCAT('%',?1,'%') OR (?1 = null))"
+	 @Query("select p from Provider as p WHERE ( lower(p.address) like lower(CONCAT('%',?1,'%')) OR (?1 = null))"
 				+ " AND"
-				+ " (p.tel like CONCAT('%',?2,'%') OR (?2 = null))")
+				+ " (lower(p.tel) like lower(CONCAT('%',?2,'%')) OR (?2 = null))")
 	 List<Provider>search( String address, String tel);
 }
