@@ -12,7 +12,7 @@ import com.warehouse.entity.Category;
 	public interface CategoryRepository extends JpaRepository<Category, Integer>{
 		 @Query("SELECT c FROM Category as c  ORDER BY c.id asc")
 		  List<Category> dm();
-		 @Query("SELECT c FRom Category as c WHERE name like %?1%")
+		 @Query("SELECT c FRom Category as c WHERE lower(name) like lower(CONCAT('%',?1,'%'))")
 		 List<Category>search(String name);
 		
 	}
