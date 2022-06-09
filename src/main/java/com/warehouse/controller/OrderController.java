@@ -96,16 +96,18 @@ public class OrderController {
 	@PostMapping("/register/save")
 	public ResponseEntity addNewOrder(@RequestBody @Valid NewOrder newOrder, BindingResult bindingResult)
 			throws Exception {
-		if (newOrder.getOrder().getTrading_type().equalsIgnoreCase("export")) {
-			List<Order_Detail> newDetailList = newOrder.getDetails();
-			List<Product> productAmountList = prRepository.dm();
-			for (Order_Detail element : newDetailList) {
-				if (element.getAmount() > getAmountByID(productAmountList, element.getProduct_id())) {
+		List<Order_Detail> newDetailList = newOrder.getDetails();
+		List<Product> productAmountList = prRepository.dm();
+		for (Order_Detail element : newDetailList) {
+			if (element.getAmount() > getAmountByID(productAmountList, element.getProduct_id())) {
+				if (newOrder.getOrder().getTrading_type().equalsIgnoreCase("export"))
 					throw new ArithmeticException(
 							"ID:" + element.getId() + " ordered an amount that is larger than available value");
-				}
+			} else if (element.getAmount() <= 0) {
+				throw new ArithmeticException("ID:" + element.getId() + " ordered an amount < 1");
 			}
 		}
+
 		if (bindingResult.hasErrors()) {
 			Map<String, String> errors = new HashMap<>();
 			bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
