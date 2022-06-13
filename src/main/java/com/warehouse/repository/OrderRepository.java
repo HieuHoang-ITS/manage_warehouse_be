@@ -87,10 +87,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 			+ " o.trading_type, o.customer_name, o.customer_phone, o.status, o.description,"
 			+ " o.total_price,us.full_name as user_name, o.created_at) "
 			+ " FROM Order as o JOIN User as us ON o.user_id = us.id" + " WHERE"
-			+ " ((:type like 'record') or o.delete_flag=false)" + " and ((:id in (0)) or o.id=:id)"
-			+ " and ((:user_id in (0)) or us.id=:user_id)" + " and ((:status is null) or o.status = :status)"
-			+ " and ((:fromDate in (:nullDate) or :toDate in (:nullDate)) or (o.created_at >= :fromDate and o.created_at<=:toDate))"
-			+ " and ((:type like 'record') or o.trading_type=:type)")
+			+ " ((:type like 'record') OR o.delete_flag=false)" + " AND ((:id in (0)) OR o.id=:id)"
+			+ " AND ((:user_id in (0)) OR us.id=:user_id)" + " and ((:status is null) or o.status = :status)"
+			+ " AND ((:fromDate in (:nullDate) AND :toDate in (:nullDate)) OR (o.created_at >= :fromDate AND o.created_at<=:toDate))"
+			+ " AND ((:type like 'record') OR o.trading_type=:type)")
 	List<CustomOrder> searchByFilter(int id, @Param("user_id") int uid, @Param("status") String status,
 			@Param("nullDate") Date nullDate, @Param("fromDate") Date fromDate, @Param("toDate") Date toDate,
 			@Param("type") String type);
