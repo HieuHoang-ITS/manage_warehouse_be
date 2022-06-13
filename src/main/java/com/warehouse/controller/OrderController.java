@@ -85,14 +85,6 @@ public class OrderController {
 		return orderService.findAllUser();
 	}
 
-	int getAmountByID(List<Product> list, int id) {
-		for (Product element : list) {
-			if (element.getId() == id)
-				return element.getAmount();
-		}
-		return 0;
-	}
-
 	@PostMapping("/register/save")
 	public ResponseEntity addNewOrder(@RequestBody @Valid NewOrder newOrder, BindingResult bindingResult)
 			throws Exception {
@@ -121,6 +113,7 @@ public class OrderController {
 		}
 		return orderService.add(newOrder);
 	}
+	
 
 	@PutMapping("/change-delete-flag")
 	public ResponseEntity updateDeleteFlag(@RequestBody int[] deleteIDs) {
@@ -132,8 +125,13 @@ public class OrderController {
 		System.out.println(order_id);
 		return orderDetailService.findOrderDetails(order_id);
 	}
-//	@PostMapping("/detail")
-//	public ResponseEntity addNewDetailOrder(@RequestBody Order_Detail orderDetail ) {
-//		return orderDetailService.add(orderDetail);
-//	}
+	
+	// Get product amount by ID
+	int getAmountByID(List<Product> list, int id) {
+		for (Product element : list) {
+			if (element.getId() == id)
+				return element.getAmount();
+		}
+		return 0;
+	}
 }
