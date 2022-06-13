@@ -3,7 +3,9 @@ package com.warehouse.repository;
 import java.util.List;
 import org.hibernate.query.NativeQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.warehouse.entity.CustomProductDisplay;
@@ -13,6 +15,7 @@ import com.warehouse.entity.Product;
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 	@Query("select e from Product e where e.name like ?1")
 	List<Product> searchProduct(String search);
+	
 	 @Query("SELECT e FROM Product e ORDER BY e.id asc")
 	  List<Product> dm();
 	 
@@ -33,4 +36,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 				+ "and"
 				+ "(lower(pro.name) like lower(CONCAT('%',?3,'%'))OR (?3=null))")
 	 List<CustomProductDisplay>search(String product_name,String category_name,String provider_name);
+	 
+	 @Modifying
+	 @Query(value="UPDATE Product SET amount = (amount) - (:amount) where id=:id")
+	 void updateProductAmountFromOrder(@Param("id")int id,@Param("amount") int amount);
 }
