@@ -119,19 +119,19 @@ public class OrderService {
 
 		return orderRepository.findAll();
 	}
-
+	// Fetch order records according to trading_type
 	public ResponseEntity<List<CustomOrder>> findIEOrders(String type) {
 		List<CustomOrder> orders;
 		orders = orderRepository.findIEOrders(type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
-
+	// Fetch order history
 	public ResponseEntity<List<CustomOrder>> findAllProcessedOrders() {
 		List<CustomOrder> orders;
 		orders = orderRepository.findAllProcessedOrders();
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
-
+	
 	public boolean checkString(String str) {
 		if (str == null || str.length() < 0)
 			return false;
@@ -140,16 +140,18 @@ public class OrderService {
 		else
 			return true;
 	}
-
+	// Search order by filters
 	public ResponseEntity<List<CustomOrder>> searchByFilter(NewOrderSearch filter, String type) throws ParseException {
+		// return list
 		List<CustomOrder> orders = null;
+		// filters
 		int id = 0;
 		int uid = 0;
 		String status = null;
 		Date nullDate = new SimpleDateFormat("yyyy-MM-dd").parse("0000-00-00");
 		Date fromDate = nullDate;
 		Date toDate = nullDate;
-
+		// check and parse value
 		if (checkString(filter.getId()))
 			id = Integer.parseInt(filter.getId());
 		if (checkString(filter.getUid()))
@@ -159,20 +161,28 @@ public class OrderService {
 		if (checkString(filter.getFromDate()))
 			try {
 				fromDate = new SimpleDateFormat("yyyy-MM-dd").parse(filter.getFromDate());
+			} catch (Exception e) {}
+		if(checkString(filter.getToDate()))
+			try {
 				toDate = new SimpleDateFormat("yyyy-MM-dd").parse(filter.getToDate());
-				// get the day after
 				Calendar c = Calendar.getInstance();
 				c.setTime(toDate);
-//				c.add(Calendar.DATE, 1);
+				c.add(Calendar.HOUR, 23);
+				c.add(Calendar.MINUTE, 59);
+				c.add(Calendar.SECOND, 59);
 				toDate = c.getTime();
-			} catch (Exception e) {
-			}
+			} catch (Exception e) {}
+		else {
+			toDate = new Date();
+		}
+		//
 		System.out.println(
 				"[" + id + " - " + uid + " - " + status + " - " + fromDate + " - " + toDate + " - " + type + "]");
 		orders = orderRepository.searchByFilter(id, uid, status, nullDate, fromDate, toDate, type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
 	
+	// Save new order 
 	@Transactional
 	public ResponseEntity add(NewOrder newOrder) {
 		// Insert to trading_invoice
@@ -184,16 +194,21 @@ public class OrderService {
 		Order_Detail order_Detail;
 		int order_id = orderRepository.getlastestIndex();
 		for (int i = 0; i < newOrder.getDetails().size(); i++) {
+			//update values
 			int productID = newOrder.getDetails().get(i).getProduct_id();
 			int amount = newOrder.getDetails().get(i).getAmount();
 			order_Detail = new Order_Detail(productID, order_id, amount);
 			System.out.println(order_Detail);
+			// change +-amount upon checking the order type 
+			if(newOrder.getOrder().getTrading_type().equalsIgnoreCase("export"))
+				amount = -amount;
+			// call jpa
 			productRepository.updateProductAmountFromOrder(productID, amount);
 			orderDetailRepository.save(order_Detail);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("New Order has been added");
 	}
-
+	// Fetch all in-use products
 	public ResponseEntity<List<CustomProductDisplay>> findAllProduct(String type) {
 		List<CustomProductDisplay> products;
 		if (type.equalsIgnoreCase("import")) {
@@ -203,7 +218,7 @@ public class OrderService {
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(products);
 	}
-
+	// Fetch users list
 	public ResponseEntity<List<User>> findAllUser() {
 		List<User> users = orderRepository.findAllUser();
 		return ResponseEntity.status(HttpStatus.OK).body(users);
@@ -216,7 +231,7 @@ public class OrderService {
 	public List<ThongKeLoai> thongKeLoaixuat(int thang, int nam) {
 		return orderRepository.Thongkeloaixuat(thang, nam);
 	}
-
+	// Delete order(s) logically
 	public ResponseEntity deleteFlag(int[] deleteIDs) {
 		for (int i : deleteIDs) {
 			orderRepository.deleteFlags(i);
