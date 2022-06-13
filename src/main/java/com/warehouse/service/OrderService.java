@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.warehouse.entity.Order;
 import com.warehouse.entity.ThongKeSanPhamTheoThang;
 import com.warehouse.entity.Thongke;
 import com.warehouse.repository.OrderRepository;
+import com.warehouse.repository.ProductRepository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,6 +49,8 @@ import com.warehouse.repository.OrderRepository;
 @Service
 public class OrderService {
 
+	@Autowired
+	ProductRepository productRepository;
 	@Autowired
 	OrderRepository orderRepository;
 	@Autowired
@@ -168,7 +172,8 @@ public class OrderService {
 		orders = orderRepository.searchByFilter(id, uid, status, nullDate, fromDate, toDate, type);
 		return ResponseEntity.status(HttpStatus.OK).body(orders);
 	}
-
+	
+	@Transactional
 	public ResponseEntity add(NewOrder newOrder) {
 		// Insert to trading_invoice
 		Order order = newOrder.getOrder();
@@ -179,9 +184,11 @@ public class OrderService {
 		Order_Detail order_Detail;
 		int order_id = orderRepository.getlastestIndex();
 		for (int i = 0; i < newOrder.getDetails().size(); i++) {
-			order_Detail = new Order_Detail(newOrder.getDetails().get(i).getProduct_id(), order_id,
-					newOrder.getDetails().get(i).getAmount());
+			int productID = newOrder.getDetails().get(i).getProduct_id();
+			int amount = newOrder.getDetails().get(i).getAmount();
+			order_Detail = new Order_Detail(productID, order_id, amount);
 			System.out.println(order_Detail);
+			productRepository.updateProductAmountFromOrder(productID, amount);
 			orderDetailRepository.save(order_Detail);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("New Order has been added");
