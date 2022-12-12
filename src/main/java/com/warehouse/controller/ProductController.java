@@ -19,12 +19,11 @@ import com.warehouse.entity.CustomProductDisplay;
 import com.warehouse.entity.Product;
 import com.warehouse.entity.User;
 import com.warehouse.repository.ProductRepository;
-import com.warehouse.service.ProductService;
-import com.warehouse.service.ProviderService;
+import com.warehouse.service.system.ProductService;
+import com.warehouse.service.system.ProviderService;
 
 @RestController
-@RequestMapping(path="api/v1/Products")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("api/v1/Products")
 public class ProductController {
 	@Autowired
 	private ProductService productService;

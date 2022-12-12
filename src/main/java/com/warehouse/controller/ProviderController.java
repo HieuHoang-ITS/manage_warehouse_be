@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.warehouse.entity.Provider;
 import com.warehouse.entity.User;
-import com.warehouse.service.ProviderService;
+import com.warehouse.service.system.ProviderService;
 @RestController
-@RequestMapping(path = "api/v1/Providers")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("api/v1/Providers")
 public class ProviderController {
 	@Autowired
 	private ProviderService providerService;

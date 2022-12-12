@@ -36,11 +36,10 @@ import com.warehouse.entity.Product;
 import com.warehouse.entity.User;
 import com.warehouse.repository.OrderRepository;
 import com.warehouse.repository.ProductRepository;
-import com.warehouse.service.OrderDetailService;
-import com.warehouse.service.OrderService;
-import com.warehouse.service.ProductService;
+import com.warehouse.service.system.OrderDetailService;
+import com.warehouse.service.system.OrderService;
+import com.warehouse.service.system.ProductService;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {

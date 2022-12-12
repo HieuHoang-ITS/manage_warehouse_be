@@ -1,4 +1,4 @@
-package com.warehouse.service;
+package com.warehouse.service.system;
 
 import java.util.List;
 
@@ -220,8 +220,8 @@ public class OrderService {
 	}
 	// Fetch users list
 	public ResponseEntity<List<User>> findAllUser() {
-		List<User> users = orderRepository.findAllUser();
-		return ResponseEntity.status(HttpStatus.OK).body(users);
+//		List<User> users = orderRepository.findAllUser();
+		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 
 	public List<ThongKeLoai> thongKeLoainhap(int thang, int nam) {

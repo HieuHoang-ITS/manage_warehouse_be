@@ -98,20 +98,19 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Query(value = "SELECT new com.warehouse.entity.CustomProductDisplay("
 			+ "pr.id, pro.id as provider_id, pr.name as product_name, ca.name as category_name, pro.name as provider_name, pro.address, pr.amount, pr.unit, ca.status, pr.price"
 			+ ")" + "FROM Product as pr, Category as ca, Provider as pro "
-			+ "WHERE pr.category_id = ca.id and pr.provider_id = pro.id and lower(ca.status) like lower('In Use')")
+			+ "WHERE pr.category_id = ca.id and pr.provider_id = pro.id and lower(ca.status) like lower('Active')")
 	List<CustomProductDisplay> productImportDisplay();
 
 	@Query(value = "SELECT new com.warehouse.entity.CustomProductDisplay("
 			+ "pr.id, pro.id as provider_id, pr.name as product_name, ca.name as category_name, pro.name as provider_name, pro.address, pr.amount, pr.unit, ca.status, pr.price"
 			+ ")" + "FROM Product as pr, Category as ca, Provider as pro "
-			+ "WHERE pr.category_id = ca.id and pr.amount>0 and pr.provider_id = pro.id and lower(ca.status) like lower('In Use')")
+			+ "WHERE pr.category_id = ca.id and pr.amount>0 and pr.provider_id = pro.id and lower(ca.status) like lower('Active')")
 	List<CustomProductDisplay> productExportDisplay();
 
 	@Query(value = "select o.id from trading_invoice as o order by o.id desc limit 1", nativeQuery = true)
 	int getlastestIndex();
 
-	@Query(value = "Select new com.warehouse.entity.User(us.id, us.full_name, us.email, us.tel, us.address) From User as us")
-	List<User> findAllUser();
+//	List<User> findAllUser();
 
 	@Transactional
 	@Modifying

@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.warehouse.entity.CustomOrder;
 import com.warehouse.entity.HomeDisplay;
 import com.warehouse.repository.HomeRepository;
-import com.warehouse.service.HomeService;
+import com.warehouse.service.system.HomeService;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/home")
 public class HomeController {

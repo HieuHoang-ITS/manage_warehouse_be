@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.warehouse.entity.Category;
 import com.warehouse.repository.CategoryRepository;
-import com.warehouse.service.CategoryService;
+import com.warehouse.service.system.CategoryService;
 
 @RestController
 @RequestMapping(path="api/v1/Categories")
-@CrossOrigin(origins = "http://localhost:4200")
 public class CategoryController {
 @Autowired
 private CategoryService categoryService;

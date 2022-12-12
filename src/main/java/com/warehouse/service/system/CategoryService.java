@@ -1,4 +1,4 @@
-package com.warehouse.service;
+package com.warehouse.service.system;
 import org.springframework.stereotype.Service;
 import com.warehouse.entity.Category;
 import com.warehouse.repository.CategoryRepository;

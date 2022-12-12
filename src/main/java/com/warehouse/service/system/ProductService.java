@@ -1,4 +1,4 @@
-package com.warehouse.service;
+package com.warehouse.service.system;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

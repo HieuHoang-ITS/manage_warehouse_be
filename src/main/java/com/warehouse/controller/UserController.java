@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.warehouse.entity.Category;
 import com.warehouse.entity.User;
-import com.warehouse.service.UserService;
+import com.warehouse.service.system.UserService;
 @RestController
 @RequestMapping(path="api/v1/User")
-@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 	@Autowired
 	private UserService userService;
